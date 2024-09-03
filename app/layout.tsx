@@ -1,20 +1,26 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import "./fonts.css"; // Add this line
-
-export const metadata: Metadata = {
-  title: "CrisisCore",
-  description: "A disaster management platform focused on providing essential connectivity and power solutions during emergencies.",
-};
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import './globals.css'  // Import the new CSS file
+import GridBackground from './components/GridBackground'
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <body className="font-sans">{children}</body>
+      <ClerkProvider>
+        <body>
+          <GridBackground />
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          {children}
+        </body>
+      </ClerkProvider>
     </html>
-  );
+  )
 }

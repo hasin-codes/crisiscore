@@ -66,14 +66,22 @@ export function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#111111] text-white p-4 font-sans">
+    <div className="min-h-screen text-white p-4 font-sans">
       <header className="mb-6">
         <h1 className="text-2xl font-bold text-left text-white">CrisisCore</h1>
       </header>
-      
+      <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px] mb-4">
+          <CardHeader>
+            <CardTitle className="text-xxl font-bold">Hello</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xl mb-2">A powerful cyclone is moving in from the east with extremely dangerous winds at 33 m/s. This can rip off coconut trees and cause severe damage to buildings, including tearing off roofs.</p>
+          </CardContent>
+        </Card>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Weather Updates */}
-        <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-[#1B1B1B]">
+        <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -117,7 +125,7 @@ export function HomePage() {
         </Card>
 
         {/* Alerts Section */}
-        <Card className="border-red-700 shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-[#1B1B1B]">
+        <Card className="border-red-700 shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <AlertTriangle className="w-6 h-6 mr-2" />
@@ -139,7 +147,7 @@ export function HomePage() {
         </Card>
 
         {/* Planner Section */}
-        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-[#1B1B1B]">
+        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <FileText className="w-6 h-6 mr-2" />
@@ -165,7 +173,7 @@ export function HomePage() {
         </Card>
 
         {/* Emergency Tools */}
-        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-[#1B1B1B]">
+        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -196,7 +204,7 @@ export function HomePage() {
         </Card>
 
         {/* Relief Section */}
-        <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-[#1B1B1B]">
+        <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <Send className="w-6 h-6 mr-2" />
@@ -227,7 +235,7 @@ export function HomePage() {
         </Card>
 
         {/* AI Chat */}
-        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-[#1B1B1B]">
+        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <MessageSquare className="w-6 h-6 mr-2" />
