@@ -27,7 +27,7 @@ export default function CycloneWarning() {
     <div className="px-4">
       <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[40px]">
         <CardContent className="p-2">
-          <p className="text-2xl font-bold text-white whitespace-pre-wrap" aria-live="polite">
+          <p className="text-lg font-bold text-white whitespace-pre-wrap" aria-live="polite">
             {displayText}
             {isTyping && (
               <span 
