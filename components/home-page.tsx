@@ -76,7 +76,7 @@ export function HomePage() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 px-4">
         {/* Weather Updates */}
-        <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
+        <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,7 @@ export function HomePage() {
         </Card>
 
         {/* Alerts Section */}
-        <Card className="border-red-700 shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
+        <Card className="border-red-700 shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <AlertTriangle className="w-6 h-6 mr-2" />
@@ -142,7 +142,7 @@ export function HomePage() {
         </Card>
 
         {/* Planner Section */}
-        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
+        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <FileText className="w-6 h-6 mr-2" />
@@ -168,7 +168,7 @@ export function HomePage() {
         </Card>
 
         {/* Emergency Tools */}
-        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
+        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -199,7 +199,7 @@ export function HomePage() {
         </Card>
 
         {/* Relief Section */}
-        <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
+        <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px]">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <Send className="w-6 h-6 mr-2" />
@@ -230,11 +230,14 @@ export function HomePage() {
         </Card>
 
         {/* AI Chat */}
-        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
+        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px] ">
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <MessageSquare className="w-6 h-6 mr-2" />
-              Operations Command AI
+              <div className="flex flex-col space-y-1 flex-grow">
+                <CardTitle className="text-white">Operations Command AI</CardTitle>
+                <div className="h-4"></div>
+              </div>
             </CardTitle>
           </CardHeader>
           <CardContent>
