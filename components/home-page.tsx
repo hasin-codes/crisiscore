@@ -68,7 +68,7 @@ export function HomePage() {
   return (
     <div className="min-h-screen text-white p-4 font-sans">
       <header className="mb-6">
-        <h1 className="text-2xl font-bold text-left text-white">CrisisCore</h1>
+        <h1 className="text-2xl font-bold text-left text-white">CrisisCore <h2>Alpha test</h2></h1>
       </header>
       <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px] mb-4">
           <CardHeader>
