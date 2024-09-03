@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
+import CycloneWarning from './CycloneWarning'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -66,20 +67,14 @@ export function HomePage() {
   };
 
   return (
-    <div className="min-h-screen text-white p-4 font-sans">
-      <header className="mb-6">
-        <h1 className="text-2xl font-bold text-left text-white">CrisisCore <h2>Alpha test</h2></h1>
+    <div className="min-h-screen text-white font-sans">
+      <header className="mb-6 px-4">
+        <h1 className="text-2xl font-bold text-left text-white">CrisisCore</h1>
       </header>
-      <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px] mb-4">
-          <CardHeader>
-            <CardTitle className="text-xxl font-bold">Hello</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xl mb-2">A powerful cyclone is moving in from the east with extremely dangerous winds at 33 m/s. This can rip off coconut trees and cause severe damage to buildings, including tearing off roofs.</p>
-          </CardContent>
-        </Card>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      
+      <CycloneWarning p-2/>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 px-4">
         {/* Weather Updates */}
         <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[9px]">
           <CardHeader>
