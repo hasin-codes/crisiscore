@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress"
 import { Wind, Droplets, AlertTriangle, FileText, Phone, Send, MessageSquare } from "lucide-react"
 import useWeatherData from '../app/hooks/useGeolocation'
 import { formatNumber } from '../utils/formatters'
+import Navbar from './Navbar'
 
 declare global {
   interface Window {
@@ -54,7 +55,7 @@ export function HomePage() {
         key: mapApiKey,
         lat: lat,
         lon: lon,
-        zoom: 10,
+        zoom: 20,
       };
 
       window.windyInit(options, (windyAPI: any) => {
@@ -68,9 +69,7 @@ export function HomePage() {
 
   return (
     <div className="min-h-screen text-white font-sans">
-      <header className="mb-6 px-4">
-        <h1 className="text-2xl font-bold text-left text-white">CrisisCore</h1>
-      </header>
+      <Navbar />
       
       <CycloneWarning p-2/>
       
