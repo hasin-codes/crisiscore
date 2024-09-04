@@ -83,7 +83,7 @@ export function HomePage() {
                 <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              Tactical Weather
+              Weather Insights
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-4">
@@ -123,7 +123,7 @@ export function HomePage() {
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <AlertTriangle className="w-6 h-6 mr-2" />
-              Critical Alerts
+              Emergency Alerts
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -145,7 +145,7 @@ export function HomePage() {
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <FileText className="w-6 h-6 mr-2" />
-              Mission Checklist
+              Preparation Checklist
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -175,7 +175,7 @@ export function HomePage() {
                 <path d="M14 2L21 9L14 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <line x1="3" y1="22" x2="21" y2="22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
               </svg>
-              Emergency Controls
+              Emergency Actions
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-2">
@@ -202,7 +202,7 @@ export function HomePage() {
           <CardHeader>
             <CardTitle className="flex items-center text-white">
               <Send className="w-6 h-6 mr-2" />
-              Relief Operations
+              Aid Tracker
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -234,7 +234,7 @@ export function HomePage() {
             <CardTitle className="flex items-center text-white">
               <MessageSquare className="w-6 h-6 mr-2" />
               <div className="flex flex-col space-y-1 flex-grow">
-                <CardTitle className="text-white">Operations Command AI</CardTitle>
+                <CardTitle className="text-white">AI Assistance</CardTitle>
                 <div className="h-4"></div>
               </div>
             </CardTitle>
