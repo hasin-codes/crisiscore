@@ -21,7 +21,7 @@ export default function Navbar() {
   return (
     <nav className="bg-transparent text-white p-4 flex items-center justify-between">
       <Link href="/" className="text-2xl font-bold">
-        <span className="inline">CrisisCore</span>
+        <span className="hidden sm:inline">CrisisCore</span>
       </Link>
       
       <div className="flex-grow flex justify-center">
