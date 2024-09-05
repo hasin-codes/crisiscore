@@ -46,7 +46,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       stop: null
     })
 
-    res.status(200).json({ message: chatCompletion.choices[0]?.message?.content || '' })
+    const aiResponse = chatCompletion.choices[0]?.message?.content || ''
+
+    res.status(200).json({ message: aiResponse })
   } catch (error) {
     console.error('Error processing weather data:', error)
     res.status(500).json({ message: 'Error processing weather data' })
