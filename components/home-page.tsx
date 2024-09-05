@@ -68,7 +68,7 @@ export function HomePage() {
   };
 
   return (
-    <div className="min-h-screen text-white font-sans"> {/* Removed pt-20 */}
+    <div className="min-h-screen text-white font-sans">
       <CycloneWarning p-2/>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 px-4">
@@ -135,6 +135,30 @@ export function HomePage() {
                 Evacuation order for Sector 7
               </li>
             </ul>
+          </CardContent>
+        </Card>
+
+        {/* AI Chat */}
+        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px] lg:row-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center text-white">
+              <MessageSquare className="w-6 h-6 mr-2" />
+              <div className="flex flex-col space-y-1 flex-grow">
+                <CardTitle className="text-white">AI Assistance</CardTitle>
+                <div className="h-4"></div>
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="h-64 bg-[#010B13] rounded-lg p-2 overflow-y-auto">
+                <p className="text-sm text-white">How can I assist with your emergency operations?</p>
+              </div>
+              <div className="flex items-center">
+                <input type="text" placeholder="Enter your query..." className="flex-grow mr-2 p-2 bg-[#010B13] rounded-lg text-white" />
+                <Button className="text-white">Send</Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -222,30 +246,6 @@ export function HomePage() {
               <Button className="w-full bg-green-700 hover:bg-green-600 text-white">
                 Request/Send Aid
               </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* AI Chat */}
-        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px] ">
-          <CardHeader>
-            <CardTitle className="flex items-center text-white">
-              <MessageSquare className="w-6 h-6 mr-2" />
-              <div className="flex flex-col space-y-1 flex-grow">
-                <CardTitle className="text-white">AI Assistance</CardTitle>
-                <div className="h-4"></div>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="h-32 bg-[#010B13] rounded-lg p-2 overflow-y-auto">
-                <p className="text-sm text-white">How can I assist with your emergency operations?</p>
-              </div>
-              <div className="flex items-center">
-                <input type="text" placeholder="Enter your query..." className="flex-grow mr-2 p-2 bg-[#010B13] rounded-lg text-white" />
-                <Button className="text-white">Send</Button>
-              </div>
             </div>
           </CardContent>
         </Card>
