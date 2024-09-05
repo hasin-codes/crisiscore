@@ -1,8 +1,8 @@
-import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-import './globals.css'  // Import the new CSS file
+import { ClerkProvider } from '@clerk/nextjs'
+import './globals.css'
 import GridBackground from './components/GridBackground'
-import { SpeedInsights } from '@vercel/speed-insights/next';
-
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import Navbar from '@/components/Navbar'
 
 export default function RootLayout({
   children,
@@ -14,13 +14,8 @@ export default function RootLayout({
       <ClerkProvider>
         <body>
           <GridBackground />
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            
-          </SignedIn>
-          {children}
+          <Navbar />
+          <main className="pt-20">{children}</main>
           <SpeedInsights />
         </body>
       </ClerkProvider>
