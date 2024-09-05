@@ -24,19 +24,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY
     })
 
+    const aiInput = JSON.stringify(windyResponse.data);
+    console.log('Data sent to AI:', aiInput);
+
     const chatCompletion = await groq.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "You are Crisiscore AI, designed to help people understand weather conditions clearly and concisely. Analyze the weather data and determine if it indicates a potential disaster. Respond with a short, easy-to-understand message about the weather and its severity, giving an example if appropriate. Use simple English and keep the response to 2-3 lines."
+          content: "You are CrisisCore AI, a specialized weather analysis AI designed to evaluate and forecast weather conditions for the upcoming 1-2 hours based on JSON data received from the Windy API. The data includes: 'ts' (Unix timestamps in milliseconds), 'wind_u-surface' and 'wind_v-surface' (wind components in m/s), 'temp-surface' (temperatures in Kelvin), 'past3hprecip-surface' (precipitation in meters/3 hours), and 'units'. Convert timestamps to readable dates, wind speeds to knots (√(u² + v²) * 1.94384), temperatures to Celsius (°C = K - 273.15), and precipitation to cm. Identify potential hazards like strong winds, extreme temperatures, heavy rainfall, rapid changes, dry spells, thunderstorms, and freezing conditions. Provide a concise 2-3 sentence summary of the weather outlook, including key metrics, identified hazards, and necessary warnings. Focus solely on the provided data, avoiding speculation. Your response should be clear, accurate, and easily understood by the public, highlighting potential risks requiring precautions. Ignore any 'warning' field in the data."
         },
         {
           role: "user",
-          content: JSON.stringify(windyResponse.data)
+          content: aiInput
         }
       ],
       model: "llama3-groq-70b-8192-tool-use-preview",
-      temperature: 0.5,
+      temperature: 0.2,
       max_tokens: 1024,
       top_p: 0.65,
       stream: false,

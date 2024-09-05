@@ -1,14 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import axios from 'axios'
+
+const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes in milliseconds
 
 export default function CycloneWarning() {
   const [fullText, setFullText] = useState('')
   const [displayText, setDisplayText] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [location, setLocation] = useState<{ lat: number; lon: number } | null>(null)
+  const lastFetchTime = useRef<number | null>(null)
+  const cachedWeatherData = useRef<string | null>(null)
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -33,6 +37,15 @@ export default function CycloneWarning() {
     const fetchWeatherWarning = async () => {
       if (!location) return
 
+      const now = Date.now()
+      if (lastFetchTime.current && now - lastFetchTime.current < CACHE_DURATION) {
+        if (cachedWeatherData.current) {
+          setFullText(cachedWeatherData.current)
+          setIsTyping(true)
+          return
+        }
+      }
+
       try {
         const weatherResponse = await axios.post('/api/weather-forecast', {
           lat: location.lat,
@@ -40,6 +53,8 @@ export default function CycloneWarning() {
         })
 
         setFullText(weatherResponse.data.message)
+        cachedWeatherData.current = weatherResponse.data.message
+        lastFetchTime.current = now
         setIsTyping(true)
       } catch (error) {
         console.error('Error fetching weather warning:', error)
@@ -50,6 +65,8 @@ export default function CycloneWarning() {
 
     if (location) {
       fetchWeatherWarning()
+      const intervalId = setInterval(fetchWeatherWarning, CACHE_DURATION)
+      return () => clearInterval(intervalId)
     }
   }, [location])
 
