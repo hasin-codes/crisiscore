@@ -19,17 +19,22 @@ const Navbar = () => {
               About
             </Link>
           </li>
+          <li>
+            <Link href="/planner" className="text-white hover:text-blue-200">
+              Planner
+            </Link>
+          </li>
+          <li>
+            <Link href="/emergency" className="text-white hover:text-blue-200">
+              Emergency
+            </Link>
+          </li>
           <SignedIn>
             <UserButton />
           </SignedIn>
           <SignedOut>
             <SignInButton />
           </SignedOut>
-          <li>
-            <Link href="/emergency" className="text-white hover:text-blue-200">
-              Emergency
-            </Link>
-          </li>
         </ul>
       </div>
     </nav>
