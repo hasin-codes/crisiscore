@@ -1,21 +1,25 @@
+'use client';
+
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { HomePage } from '@/components/home-page';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Home() {
-  return (
-    <main className="flex flex-col items-center justify-center min-h-screen">
+  const router = useRouter();
 
-      <SignedOut>
-        <Link href="/sign-in">
-          <button className="bg-white text-black px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors">
-            Sign In
-          </button>
-        </Link>
-      </SignedOut>
+  useEffect(() => {
+    router.push('/sign-in');
+  }, [router]);
+
+  return (
+    <main className="flex items-center justify-center h-full p-24">
       <SignedIn>
         <HomePage />
       </SignedIn>
+      <SignedOut>
+        {/* Redirect happens automatically, no content needed here */}
+      </SignedOut>
     </main>
   )
 }
