@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BrainCircuit, AlertTriangle, CheckSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,24 @@ interface WindyData {
 
 export default function Planner({ windyData }: { windyData: WindyData }) {
   const [plannerData, setPlannerData] = useState<PlannerData | null>(null);
+  const [displayData, setDisplayData] = useState<PlannerData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const savedData = localStorage.getItem('plannerData');
+    if (savedData) {
+      setPlannerData(JSON.parse(savedData));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isMounted && plannerData) {
+      localStorage.setItem('plannerData', JSON.stringify(plannerData));
+    }
+  }, [isMounted, plannerData]);
 
   const fetchPlannerData = async () => {
     setIsLoading(true);
@@ -53,120 +70,12 @@ export default function Planner({ windyData }: { windyData: WindyData }) {
           {
             role: "user",
             content: JSON.stringify({
-              referenceData: {
-                alert: {
-                  title: "Alert",
-                  description: "23CM Rainfall in last 30 mins, 2 hours very heavy rainshower incoming"
-                },
-                tasks: [
-                  {
-                    id: 1,
-                    description: "Gather important papers and put them in a waterproof bag or container. Use a zip-lock bag if you have one."
-                  },
-                  {
-                    id: 2,
-                    description: "Move to higher ground if you're in a low-lying area. Go to the highest floor of your building if you can't leave."
-                  },
-                  {
-                    id: 3,
-                    description: "Prepare an emergency kit with food, water, medicines, and a flashlight. Put it in a waterproof bag."
-                  },
-                  {
-                    id: 4,
-                    description: "Turn off electricity, gas, and water supplies if it's safe to do so."
-                  },
-                  {
-                    id: 5,
-                    description: "Stay away from flood water. It may be dirty or have electric currents."
-                  },
-                  {
-                    id: 6,
-                    description: "Keep your phone charged and listen to local news for updates."
-                  },
-                  {
-                    id: 7,
-                    description: "Help your neighbors, especially elderly or disabled people, if you can do so safely."
-                  },
-                  {
-                    id: 8,
-                    description: "Don't drive through flooded areas. Your car can be swept away in just 30cm of water."
-                  },
-                  {
-                    id: 9,
-                    description: "Be ready to leave quickly if told to evacuate. Know where the nearest safe place is."
-                  },
-                  {
-                    id: 10,
-                    description: "If you're trapped, go to the roof and signal for help. Use a bright cloth or flashlight."
-                  },
-                  {
-                    id: 11,
-                    description: "Secure loose items outside your home that could be swept away by flood waters."
-                  },
-                  {
-                    id: 12,
-                    description: "Fill clean containers with drinking water in case the water supply becomes contaminated."
-                  },
-                  {
-                    id: 13,
-                    description: "Move valuable items and electronics to higher levels in your home."
-                  },
-                  {
-                    id: 14,
-                    description: "Wear protective clothing and footwear if you must walk through flood water."
-                  },
-                  {
-                    id: 15,
-                    description: "Be cautious of snakes and other animals that may have been displaced by flood waters."
-                  },
-                  {
-                    id: 16,
-                    description: "If you smell gas or suspect a leak, leave immediately and inform authorities."
-                  },
-                  {
-                    id: 17,
-                    description: "Use your mobile phone sparingly to conserve battery life."
-                  },
-                  {
-                    id: 18,
-                    description: "If you have time, consider helping neighbors move their valuables to higher ground."
-                  },
-                  {
-                    id: 19,
-                    description: "Keep children and pets indoors and away from flood waters."
-                  },
-                  {
-                    id: 20,
-                    description: "If you have a water pump, make sure it's working and ready to use."
-                  },
-                  {
-                    id: 21,
-                    description: "Be prepared for power outages. Have flashlights and batteries ready."
-                  },
-                  {
-                    id: 22,
-                    description: "If you have a generator, ensure it's in working condition and has fuel."
-                  },
-                  {
-                    id: 23,
-                    description: "Monitor the structural integrity of your home. If you notice any cracks or shifting, evacuate immediately."
-                  },
-                  {
-                    id: 24,
-                    description: "Have a designated family meeting point in case you get separated."
-                  },
-                  {
-                    id: 25,
-                    description: "Stay calm and reassure family members, especially children and elderly."
-                  }
-                ]
-              },
               windyData: windyData
             })
           }
         ],
         model: "llama3-groq-70b-8192-tool-use-preview",
-        temperature: 0.39,
+        temperature: 0.2,
         max_tokens: 1024,
         top_p: 0.65,
         stream: false,
@@ -176,19 +85,75 @@ export default function Planner({ windyData }: { windyData: WindyData }) {
         stop: null
       });
 
+      console.log("API Response:", chatCompletion); // Debug log
+
       const content = chatCompletion.choices[0].message.content;
       if (content) {
-        const parsedData = JSON.parse(content) as PlannerData;
-        setPlannerData(parsedData);
+        try {
+          const parsedData = JSON.parse(content) as PlannerData;
+          console.log("Parsed Data:", parsedData); // Debug log
+          if (parsedData.alert && parsedData.tasks && Array.isArray(parsedData.tasks)) {
+            setPlannerData(parsedData);
+            setDisplayData(null);
+            setIsTyping(true);
+          } else {
+            throw new Error("Invalid data structure");
+          }
+        } catch (parseError) {
+          console.error("Error parsing API response:", parseError);
+          // Handle parsing error (e.g., set an error state or show a message to the user)
+        }
       } else {
         console.error("No content in the response");
+        // Handle empty response (e.g., set an error state or show a message to the user)
       }
     } catch (error) {
       console.error("Error fetching planner data:", error);
+      // Handle API error (e.g., set an error state or show a message to the user)
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!isTyping || !plannerData) return;
+
+    let fullText = plannerData.alert.description + plannerData.tasks.map(t => t.description).join('');
+    let i = 0;
+    const typingInterval = setInterval(() => {
+      if (i < fullText.length) {
+        setDisplayData(prevData => {
+          if (!prevData) return { alert: { title: plannerData.alert.title, description: '' }, tasks: [] };
+          let newData = { ...prevData };
+          if (i < plannerData.alert.description.length) {
+            newData.alert.description = plannerData.alert.description.slice(0, i + 1);
+          } else {
+            let taskIndex = Math.floor((i - plannerData.alert.description.length) / 50);
+            let charIndex = (i - plannerData.alert.description.length) % 50;
+            if (taskIndex < plannerData.tasks.length) {
+              newData.tasks = plannerData.tasks.slice(0, taskIndex);
+              newData.tasks.push({
+                id: plannerData.tasks[taskIndex].id,
+                description: plannerData.tasks[taskIndex].description.slice(0, charIndex + 1)
+              });
+            }
+          }
+          return newData;
+        });
+        i++;
+      } else {
+        clearInterval(typingInterval);
+        setIsTyping(false);
+        setDisplayData(plannerData);
+      }
+    }, 20); // Adjust typing speed here
+
+    return () => clearInterval(typingInterval);
+  }, [isTyping, plannerData]);
+
+  if (!isMounted) {
+    return null; // or a loading spinner
+  }
 
   return (
     <Card className="col-span-1 md:col-span-2 border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px] flex flex-col">
@@ -201,16 +166,16 @@ export default function Planner({ windyData }: { windyData: WindyData }) {
       <CardContent className="flex-grow flex flex-col">
         <Button 
           onClick={fetchPlannerData} 
-          disabled={isLoading}
+          disabled={isLoading || isTyping}
           className="mb-4 bg-blue-500 hover:bg-blue-600 text-white"
         >
-          {isLoading ? "Loading..." : "Get Planner"}
+          {isLoading ? "Loading..." : isTyping ? "Generating..." : "Get Planner"}
         </Button>
         <div className="bg-[#010B13] rounded-lg p-4 flex-grow overflow-y-auto">
-          {plannerData ? (
+          {displayData ? (
             <div className="space-y-4">
-              <WeatherAlert alert={plannerData.alert} />
-              <Checklist tasks={plannerData.tasks} />
+              <WeatherAlert alert={displayData.alert} />
+              <Checklist tasks={displayData.tasks} />
             </div>
           ) : (
             <p className="text-white text-sm">
