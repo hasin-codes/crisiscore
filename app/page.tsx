@@ -9,19 +9,19 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-24 text-white">
+    <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 md:p-24 text-white">
       <SignedIn>
         <HomePage />
       </SignedIn>
       <SignedOut>
         <div className="text-center">
-          <h1 className="text-2xl mb-4 text-white">Welcome to CrisisCore</h1>
+          <h1 className="text-xl sm:text-2xl mb-4 text-white">Welcome to CrisisCore</h1>
           <p className="mb-4 text-white">Please sign in to continue.</p>
         </div>
       </SignedOut>
       <button 
         onClick={() => router.push('/sign-in')} 
-        className="flex items-center justify-center gap-2 btn mt-4 text-white bg-purple-600 border-purple-600 hover:bg-white hover:text-purple-600 transition-colors p-2 rounded"
+        className="flex items-center justify-center gap-2 btn mt-4 text-white bg-purple-600 border-purple-600 hover:bg-white hover:text-purple-600 transition-colors p-2 rounded w-full sm:w-auto"
       >
         <LogIn size={20} />
         Sign In
