@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import axios from 'axios'
+import { Button } from "@/components/ui/button"
+import { AlertTriangle, RefreshCw } from 'lucide-react'
 
 const RATE_LIMIT_DURATION = 10 * 60 * 1000 // 10 minutes in milliseconds
 
@@ -12,8 +14,8 @@ export default function CycloneWarning() {
   const [isTyping, setIsTyping] = useState(false)
   const [location, setLocation] = useState<{ lat: number; lon: number } | null>(null)
   const lastFetchTime = useRef<number>(0)
-  const cachedWeatherData = useRef<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const canFetch = useCallback(() => {
     const now = Date.now()
@@ -27,6 +29,7 @@ export default function CycloneWarning() {
       return
     }
 
+    setIsLoading(true)
     try {
       const weatherResponse = await axios.post('/api/weather-forecast', {
         lat: location.lat,
@@ -34,7 +37,6 @@ export default function CycloneWarning() {
       })
 
       setFullText(weatherResponse.data.message)
-      cachedWeatherData.current = weatherResponse.data.message
       lastFetchTime.current = Date.now()
       setIsTyping(true)
       setError(null)
@@ -42,6 +44,8 @@ export default function CycloneWarning() {
       console.error('Error fetching weather warning:', error)
       setError('Unable to fetch weather warning. Please check back later.')
       setIsTyping(false)
+    } finally {
+      setIsLoading(false)
     }
   }, [location, canFetch])
 
@@ -56,30 +60,16 @@ export default function CycloneWarning() {
         },
         (error) => {
           console.error('Error getting location:', error)
-          setFullText('Unable to get your location. Please enable location services and try again.')
+          setError('Unable to get your location. Please enable location services and try again.')
         }
       )
     } else {
-      setFullText('Geolocation is not supported by your browser.')
+      setError('Geolocation is not supported by your browser.')
     }
   }, [])
 
-  useEffect(() => {
-    if (location && canFetch()) {
-      fetchWeatherWarning()
-    }
-  }, [location, fetchWeatherWarning, canFetch])
-
-  useEffect(() => {
-    const checkAndFetch = () => {
-      if (canFetch()) {
-        fetchWeatherWarning()
-      }
-    }
-
-    const intervalId = setInterval(checkAndFetch, 60000) // Check every minute
-    return () => clearInterval(intervalId)
-  }, [fetchWeatherWarning, canFetch])
+  // Remove the useEffect that automatically fetches on location change
+  // Remove the useEffect that checks and fetches every minute
 
   useEffect(() => {
     if (!isTyping) return
@@ -98,13 +88,39 @@ export default function CycloneWarning() {
     return () => clearInterval(typingInterval)
   }, [fullText, isTyping])
 
+  const getButtonText = () => {
+    if (isLoading) return "Fetching..."
+    if (!canFetch()) {
+      const remainingTime = Math.ceil((RATE_LIMIT_DURATION - (Date.now() - lastFetchTime.current)) / 1000)
+      return `Wait ${remainingTime}s`
+    }
+    return "CrisisCore AI"
+  }
+
   return (
     <div className="px-4">
-      <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px] min-h-[65px] w-full">
+      <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px] min-h-[65px] w-full relative">
+        <Button
+          onClick={fetchWeatherWarning}
+          className="absolute top-2 right-2 z-10 transition-all duration-300 ease-in-out transform hover:scale-105"
+          variant="outline"
+          size="sm"
+          disabled={isLoading || !canFetch()}
+        >
+          {isLoading ? (
+            <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <AlertTriangle className="mr-2 h-4 w-4" />
+          )}
+          <span className="hidden sm:inline">{getButtonText()}</span>
+          <span className="sm:hidden">
+            {isLoading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <AlertTriangle className="h-4 w-4" />}
+          </span>
+        </Button>
         <CardContent className="p-4">
           {error ? (
             <p className="text-lg font-bold text-red-500">{error}</p>
-          ) : (
+          ) : fullText ? (
             <p className="text-lg font-bold text-white whitespace-pre-wrap" aria-live="polite">
               {displayText}
               {isTyping && (
@@ -114,6 +130,8 @@ export default function CycloneWarning() {
                 ></span>
               )}
             </p>
+          ) : (
+            <p className="text-lg font-bold text-white">Generate Realtime Weather Summary ☁️</p>
           )}
         </CardContent>
       </Card>
