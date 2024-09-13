@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import axios from 'axios'
 import { Button } from "@/components/ui/button"
-import { AlertTriangle, RefreshCw } from 'lucide-react'
+import { BrainCircuit, AlertTriangle, RefreshCw } from 'lucide-react'
 
 const RATE_LIMIT_DURATION = 10 * 60 * 1000 // 10 minutes in milliseconds
 
@@ -99,10 +99,10 @@ export default function CycloneWarning() {
 
   return (
     <div className="px-4">
-      <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px] min-h-[65px] w-full relative">
+      <div className="flex flex-col space-y-2">
         <Button
           onClick={fetchWeatherWarning}
-          className="absolute top-2 right-2 z-10 transition-all duration-300 ease-in-out transform hover:scale-105"
+          className="self-end transition-all duration-300 ease-in-out transform hover:scale-105"
           variant="outline"
           size="sm"
           disabled={isLoading || !canFetch()}
@@ -110,31 +110,37 @@ export default function CycloneWarning() {
           {isLoading ? (
             <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
           ) : (
-            <AlertTriangle className="mr-2 h-4 w-4" />
+            <BrainCircuit className="mr-2 h-4 w-4" />
           )}
-          <span className="hidden sm:inline">{getButtonText()}</span>
-          <span className="sm:hidden">
-            {isLoading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <AlertTriangle className="h-4 w-4" />}
-          </span>
+          <span>{getButtonText()}</span>
         </Button>
-        <CardContent className="p-4">
-          {error ? (
-            <p className="text-lg font-bold text-red-500">{error}</p>
-          ) : fullText ? (
-            <p className="text-lg font-bold text-white whitespace-pre-wrap" aria-live="polite">
-              {displayText}
-              {isTyping && (
-                <span 
-                  className="inline-block w-2 h-4 ml-1 bg-white animate-pulse" 
-                  aria-hidden="true"
-                ></span>
-              )}
-            </p>
-          ) : (
-            <p className="text-lg font-bold text-white">Generate Realtime Weather Summary ☁️</p>
-          )}
-        </CardContent>
-      </Card>
+        
+        <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px] w-full">
+          <CardContent className="p-4">
+            {error ? (
+              <p className="text-lg font-bold text-red-500 flex items-center">
+                <AlertTriangle className="mr-2 h-5 w-5" />
+                {error}
+              </p>
+            ) : fullText ? (
+              <p className="text-lg font-bold text-white whitespace-pre-wrap" aria-live="polite">
+                {displayText}
+                {isTyping && (
+                  <span 
+                    className="inline-block w-2 h-4 ml-1 bg-white animate-pulse" 
+                    aria-hidden="true"
+                  ></span>
+                )}
+              </p>
+            ) : (
+              <p className="text-lg font-bold text-white flex items-center">
+                <BrainCircuit className="mr-2 h-5 w-5" />
+                Generate Realtime Weather Summary ☁️
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

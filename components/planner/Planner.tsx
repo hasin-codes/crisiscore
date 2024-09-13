@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BrainCircuit, AlertTriangle, CheckSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Groq from 'groq-sdk';
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface Task {
   id: number;
@@ -171,7 +172,7 @@ export default function Planner({ windyData = {} as WindyData }: { windyData?: W
         >
           {isLoading ? "Loading..." : isTyping ? "Generating..." : "Get Planner"}
         </Button>
-        <div className="bg-[#010B13] rounded-lg p-4 flex-grow overflow-y-auto">
+        <div className="bg-[#111111] rounded-lg p-4 flex-grow overflow-y-auto">
           {displayData ? (
             <div className="space-y-4">
               <WeatherAlert alert={displayData.alert} />
@@ -192,11 +193,11 @@ function WeatherAlert({ alert }: { alert: PlannerData['alert'] }) {
   return (
     <div className="mb-4">
       <h2 className="text-white text-lg font-bold flex items-center mb-2">
-        <AlertTriangle className="w-5 h-5 mr-2 text-yellow-500" />
+        <AlertTriangle className="w-5 h-5 mr-2 text-red-500" />
         Weather Alert
       </h2>
-      <div className="bg-yellow-500 bg-opacity-20 rounded-lg p-3">
-        <h3 className="text-yellow-500 font-semibold mb-1">{alert.title}</h3>
+      <div className="bg-[#800020] bg-opacity-20 rounded-lg p-3">
+        <h3 className="text-[#F4C2C2] font-semibold mb-1">{alert.title}</h3>
         <p className="text-white text-sm">{alert.description}</p>
       </div>
     </div>
@@ -204,6 +205,16 @@ function WeatherAlert({ alert }: { alert: PlannerData['alert'] }) {
 }
 
 function Checklist({ tasks }: { tasks: PlannerData['tasks'] }) {
+  const [checkedTasks, setCheckedTasks] = useState<number[]>([]);
+
+  const toggleTask = (taskId: number) => {
+    setCheckedTasks(prev => 
+      prev.includes(taskId) 
+        ? prev.filter(id => id !== taskId)
+        : [...prev, taskId]
+    );
+  };
+
   return (
     <div>
       <h2 className="text-white text-lg font-bold flex items-center mb-2">
@@ -213,8 +224,18 @@ function Checklist({ tasks }: { tasks: PlannerData['tasks'] }) {
       <ul className="space-y-2">
         {tasks.map((task) => (
           <li key={task.id} className="flex items-start">
-            <span className="text-green-500 mr-2">•</span>
-            <span className="text-white text-sm">{task.description}</span>
+            <Checkbox
+              id={`task-${task.id}`}
+              checked={checkedTasks.includes(task.id)}
+              onCheckedChange={() => toggleTask(task.id)}
+              className="mr-2 mt-1"
+            />
+            <label
+              htmlFor={`task-${task.id}`}
+              className="text-white text-sm cursor-pointer"
+            >
+              {task.description}
+            </label>
           </li>
         ))}
       </ul>
