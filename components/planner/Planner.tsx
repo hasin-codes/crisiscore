@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BrainCircuit, AlertTriangle, CheckSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,12 @@ interface WindyData {
   warning: string;
 }
 
-export default function Planner({ windyData = {} as WindyData }: { windyData?: WindyData }) {
+interface PlannerProps {
+  windyData?: WindyData;
+  onPlanGenerated?: (tasks: Task[]) => void;
+}
+
+export default function Planner({ windyData = {} as WindyData, onPlanGenerated }: PlannerProps) {
   const [plannerData, setPlannerData] = useState<PlannerData | null>(null);
   const [displayData, setDisplayData] = useState<PlannerData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -97,6 +102,9 @@ export default function Planner({ windyData = {} as WindyData }: { windyData?: W
             setPlannerData(parsedData);
             setDisplayData(null);
             setIsTyping(true);
+            if (onPlanGenerated) {
+              onPlanGenerated(parsedData.tasks);
+            }
           } else {
             throw new Error("Invalid data structure");
           }
