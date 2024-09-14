@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import axios from 'axios'
 import { Button } from "@/components/ui/button"
 import { BrainCircuit, AlertTriangle, RefreshCw } from 'lucide-react'
-import { motion } from 'framer-motion'
 
 const RATE_LIMIT_DURATION = 10 * 60 * 1000 // 10 minutes in milliseconds
 
@@ -101,36 +100,20 @@ export default function CycloneWarning() {
   return (
     <div className="px-4">
       <div className="flex flex-col space-y-2">
-        <motion.button
+        <Button
           onClick={fetchWeatherWarning}
-          className={`self-end relative overflow-hidden px-4 py-2 rounded-full font-medium text-sm bg-gradient-to-r from-grey-500 to-white-600 text-white shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 ease-in-out`}
+          className="self-end transition-all duration-300 ease-in-out transform hover:scale-105"
+          variant="outline"
+          size="sm"
           disabled={isLoading || !canFetch()}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
         >
-          <motion.div
-            className="absolute inset-0 bg-white opacity-25"
-            animate={{
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatType: 'reverse',
-            }}
-          />
-          <span className="relative flex items-center justify-center">
-            {isLoading ? (
-              <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <BrainCircuit className="mr-2 h-4 w-4" />
-            )}
-            <span>{getButtonText()}</span>
-          </span>
-          <span className="sr-only">{getButtonText()}</span>
-        </motion.button>
+          {isLoading ? (
+            <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <BrainCircuit className="mr-2 h-4 w-4" />
+          )}
+          <span>{getButtonText()}</span>
+        </Button>
         
         <Card className="border-[#343434] shadow-[0_0_10px_rgba(255,255,255,0.1)] bg-white bg-opacity-10 backdrop-blur-[7px] w-full">
           <CardContent className="p-4">
