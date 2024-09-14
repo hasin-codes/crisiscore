@@ -11,11 +11,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <ClerkProvider>
         <body>
           <GridBackground />
           <Navbar />
-          <main className="pt-20">{children}</main>
+          <main className="pt-20 px-4 max-w-screen-lg mx-auto">{children}</main>
           <SpeedInsights />
         </body>
       </ClerkProvider>
