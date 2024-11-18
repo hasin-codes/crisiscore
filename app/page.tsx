@@ -1,31 +1,10 @@
-'use client';
-
-import { SignedIn, SignedOut } from "@clerk/nextjs";
-import { HomePage } from '@/components/home-page';
-import { useRouter } from 'next/navigation';
-import { LogIn } from 'lucide-react';
+import { DashboardComponent } from '@/components/dashboard'
+import { ClientProvider } from '@/components/providers/client-provider'
 
 export default function Home() {
-  const router = useRouter();
-
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 md:p-24 text-white">
-      <SignedIn>
-        <HomePage />
-      </SignedIn>
-      <SignedOut>
-        <div className="text-center">
-          <h1 className="text-xl sm:text-2xl mb-4 text-white">Welcome to CrisisCore</h1>
-          <p className="mb-4 text-white">Please sign in to continue.</p>
-        </div>
-      </SignedOut>
-      <button 
-        onClick={() => router.push('/sign-in')} 
-        className="flex items-center justify-center gap-2 btn mt-4 text-white bg-purple-600 border-purple-600 hover:bg-white hover:text-purple-600 transition-colors p-2 rounded w-full sm:w-auto"
-      >
-        <LogIn size={20} />
-        Sign In
-      </button>
-    </main>
+    <ClientProvider>
+      <DashboardComponent />
+    </ClientProvider>
   )
 }

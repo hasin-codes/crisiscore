@@ -1,13 +1,10 @@
-import React from 'react';
-import { Emergency } from '../../components/Emergency';
+import { EmergencyPageComponent } from '@/components/emergency-page'
+import { ClientProvider } from '@/components/providers/client-provider'
 
-const EmergencyPage: React.FC = () => {
+export default function EmergencyPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Emergency Information</h1>
-      <Emergency />
-    </div>
-  );
-};
-
-export default EmergencyPage;
+    <ClientProvider>
+      <EmergencyPageComponent />
+    </ClientProvider>
+  )
+} 

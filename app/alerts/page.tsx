@@ -1,10 +1,10 @@
-import AlertsPage from "@/components/alert-page";
+import { AlertsPageComponent } from '@/components/alerts-page'
+import { ClientProvider } from '@/components/providers/client-provider'
 
-
-export default function Home() {
+export default function AlertsPage() {
   return (
-    <main>
-      <AlertsPage/>
-    </main>
+    <ClientProvider>
+      <AlertsPageComponent />
+    </ClientProvider>
   )
-}
+} 

@@ -1,13 +1,10 @@
-import React from 'react';
-import Planner from '../../components/Planner';
+import { PreparednessPlannerComponent } from '@/components/preparedness-planner'
+import { ClientProvider } from '@/components/providers/client-provider'
 
-const PlannerPage: React.FC = () => {
+export default function PlannerPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Planner</h1>
-      <Planner />
-    </div>
-  );
-};
-
-export default PlannerPage;
+    <ClientProvider>
+      <PreparednessPlannerComponent />
+    </ClientProvider>
+  )
+} 

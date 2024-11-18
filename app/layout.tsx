@@ -1,8 +1,12 @@
-import { ClerkProvider } from '@clerk/nextjs'
+import { Sidebar } from '@/components/sidebar'
+import { Toaster } from "@/components/ui/toaster"
+import type { Metadata } from 'next'
 import './globals.css'
-import GridBackground from './components/GridBackground'
-import { SpeedInsights } from '@vercel/speed-insights/next'
-import Navbar from '@/components/Navbar'
+
+export const metadata: Metadata = {
+  title: 'CrisisCore',
+  description: 'Emergency Management System',
+}
 
 export default function RootLayout({
   children,
@@ -10,18 +14,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </head>
-      <ClerkProvider>
-        <body>
-          <GridBackground />
-          <Navbar />
-          <main className="pt-20 px-4 max-w-screen-lg mx-auto">{children}</main>
-          <SpeedInsights />
-        </body>
-      </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        <div className="flex min-h-screen">
+          <div className="hidden md:block fixed h-screen z-30">
+            <Sidebar />
+          </div>
+          <main className="flex-1 w-full md:pl-64">
+            {children}
+          </main>
+        </div>
+        <Toaster />
+      </body>
     </html>
   )
 }
