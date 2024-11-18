@@ -1,8 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CrisisCore - Emergency Management System
+
+A comprehensive emergency management system built with Next.js, featuring real-time alerts, emergency response coordination, and community support networking.
+
+## Features
+
+- Real-time Emergency Alerts
+- Missing Persons Registry
+- Emergency Service Status
+- Shelter Management
+- Community Support Network
+- Preparedness Planning
+
+## Tech Stack
+
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- Shadcn/ui
+- Framer Motion
+- Lucide Icons
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/crisiscore.git
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev

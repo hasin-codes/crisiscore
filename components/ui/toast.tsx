@@ -127,7 +127,3 @@ export {
   ToastClose,
   ToastAction,
 }
-
-export const toast = ({ title, description }: { title: string; description: string }) => {
-  // Your toast implementation
-}

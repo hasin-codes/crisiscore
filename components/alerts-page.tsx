@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { AlertCircle, Bell, ChevronDown, ChevronUp, Filter, Home, Info, Map, MessageCircle, Search, Settings, Share2, User } from 'lucide-react'
+import { ChevronDown, ChevronUp, Filter, Search, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -9,7 +9,6 @@ import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Input } from '@/components/ui/input'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // Color palette export
@@ -35,8 +34,8 @@ export const colorPalette = {
   },
 }
 
-// Update the interface at the top of the file
-interface AlertItemProps {
+// Add these interfaces at the top of the file
+interface AlertCardProps {
   title: string;
   mainContent: React.ReactNode;
   expandedContent: React.ReactNode;
@@ -44,8 +43,14 @@ interface AlertItemProps {
   setIsExpanded: (value: boolean) => void;
 }
 
-// Update the component definition
-const AlertItem = ({ title, mainContent, expandedContent, isExpanded, setIsExpanded }: AlertItemProps) => {
+// Update the AlertCard component with proper typing
+const AlertCard = ({ 
+  title, 
+  mainContent, 
+  expandedContent, 
+  isExpanded, 
+  setIsExpanded 
+}: AlertCardProps) => {
   return (
     <Card className="bg-zinc-900 border-zinc-800 text-white">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -88,7 +93,7 @@ export function AlertsPageComponent() {
       <div className="flex-grow overflow-y-auto p-4 md:p-6 lg:p-8">
         <div className="space-y-6 max-w-4xl mx-auto">
           {/* AI Briefing Section */}
-          <AlertItem
+          <AlertCard
             title="AI Briefing"
             mainContent={
               <div>
@@ -154,7 +159,7 @@ export function AlertsPageComponent() {
           </Card>
 
           {/* Safety Tips Module */}
-          <AlertItem
+          <AlertCard
             title="Safety Tips"
             mainContent={
               <div>
@@ -200,7 +205,7 @@ export function AlertsPageComponent() {
           />
 
           {/* Predictions Panel */}
-          <AlertItem
+          <AlertCard
             title="Predictions"
             mainContent={
               <div>
