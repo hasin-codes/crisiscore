@@ -28,7 +28,7 @@ interface FormSubmitEvent extends React.FormEvent<HTMLFormElement> {
   target: HTMLFormElement;
 }
 
-const EmergencyCard = ({ title, description, children, trigger }: EmergencyCardProps) => {
+const _EmergencyCard = ({ title, description, children, trigger }: EmergencyCardProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -44,9 +44,9 @@ const EmergencyCard = ({ title, description, children, trigger }: EmergencyCardP
 }
 
 export function EmergencyPageComponent() {
-  const [activeForm, setActiveForm] = useState<string | null>(null)
+  const [_activeForm, setActiveForm] = useState<string | null>(null)
 
-  const handleFormSubmit = (formName: string, e: FormSubmitEvent) => {
+  const _handleFormSubmit = (formName: string, e: FormSubmitEvent) => {
     e.preventDefault()
     // Form submission logic here
     toast({

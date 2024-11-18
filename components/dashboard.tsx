@@ -4,7 +4,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, AlertTriangle, Hospital, Zap, Wifi, Home, Tent, Droplet, Pizza, Battery, Fuel, Box, Users, HelpCircle, Megaphone, Bus, School, CheckSquare, Users2, PhoneCall, Wind, Thermometer, Droplets, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
@@ -70,7 +70,7 @@ const StatusCard = ({ icon: Icon, title, status, severity }: StatusCardProps) =>
   </Card>
 )
 
-const ResourceIndicator = ({ icon: Icon, title, value, max }: ResourceIndicatorProps) => (
+const _ResourceIndicator = ({ icon: Icon, title, value, max }: ResourceIndicatorProps) => (
   <div className="flex items-center space-x-4">
     <Icon className="h-8 w-8 text-zinc-400" />
     <div className="space-y-1 flex-1">
