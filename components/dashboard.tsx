@@ -13,6 +13,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useEffect, useState } from 'react'
+import { DynamicWindyMap } from '@/components/ui/dynamic-windy-map'
 
 interface AlertCardProps {
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -36,10 +37,8 @@ interface StatCardProps {
 }
 
 const MapComponent = () => (
-  <div className="relative w-full h-[400px] bg-zinc-800 rounded-lg overflow-hidden">
-    <div className="w-full h-full flex items-center justify-center text-zinc-400">
-      Interactive Map Placeholder
-    </div>
+  <div className="relative w-full h-[400px]">
+    <DynamicWindyMap />
   </div>
 )
 
@@ -72,12 +71,12 @@ const MetricCard = ({ Icon, title, value, max }: MetricCardProps) => (
 
 const StatCard = ({ Icon, title, value, unit }: StatCardProps) => (
   <Card className="bg-zinc-900 border-zinc-800">
-    <CardContent className="flex items-center justify-between p-4">
-      <div className="flex items-center space-x-4">
-        <Icon className="h-8 w-8 text-zinc-400" />
+    <CardContent className="flex items-center justify-between p-2 sm:p-4">
+      <div className="flex items-center space-x-2 sm:space-x-4">
+        <Icon className="h-6 w-6 sm:h-8 sm:w-8 text-zinc-400" />
         <div>
-          <p className="text-sm font-medium text-white">{title}</p>
-          <p className="text-2xl font-bold text-white">{value}{unit}</p>
+          <p className="text-xs sm:text-sm font-medium text-white">{title}</p>
+          <p className="text-lg sm:text-2xl font-bold text-white">{value}{unit}</p>
         </div>
       </div>
     </CardContent>
@@ -85,7 +84,7 @@ const StatCard = ({ Icon, title, value, unit }: StatCardProps) => (
 )
 
 const WeatherSection = () => (
-  <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  <section className="grid grid-cols-3 gap-2 sm:gap-4 mb-8">
     <StatCard Icon={Thermometer} title="Temperature" value={28} unit="°C" />
     <StatCard Icon={Droplets} title="Precipitation" value={30} unit="%" />
     <StatCard Icon={Wind} title="Wind Speed" value={15} unit="km/h" />

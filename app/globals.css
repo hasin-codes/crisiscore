@@ -70,3 +70,31 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Add these styles */
+#windy {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(24 24 27);
+}
+
+/* Leaflet styles */
+.leaflet-container {
+  background-color: rgb(24 24 27) !important;
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: rgb(24 24 27) !important;
+  color: white !important;
+}
+
+.leaflet-popup-tip {
+  background-color: rgb(24 24 27) !important;
+}
+
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}

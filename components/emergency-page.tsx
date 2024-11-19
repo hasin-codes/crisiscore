@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
-import { Search, Users, Tent, Siren, Heart, User, Phone } from 'lucide-react'
+import { AlertCircle, Bell, ChevronDown, ChevronUp, Filter, Map, Menu, MessageCircle, Search, Settings, Share2, Users, Tent, Package, Siren, Heart, UserPlus, HelpingHand, FileQuestion, User, Phone, AlertTriangle, Shield, Ambulance, AmbulanceIcon as FirstAid, Zap, Flame, Droplet, Home } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
@@ -14,19 +15,20 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from '@/components/ui/use-toast'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import Script from 'next/script'
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+}
 
 interface FormDialogProps {
   title: string;
   description: string;
   children: React.ReactNode;
   trigger: React.ReactNode;
-}
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 }
 
 const FormDialog = ({ title, description, children, trigger }: FormDialogProps) => (
@@ -46,7 +48,6 @@ const FormDialog = ({ title, description, children, trigger }: FormDialogProps) 
 
 const handleFormSubmit = (formName: string) => (e: React.FormEvent) => {
   e.preventDefault()
-  const { toast } = useToast()
   toast({
     title: "Form Submitted",
     description: `Your ${formName} has been submitted successfully.`,
@@ -56,27 +57,30 @@ const handleFormSubmit = (formName: string) => (e: React.FormEvent) => {
 const MissingPersonsRegistry = () => (
   <Card className="bg-zinc-900 text-white border-zinc-800 h-full">
     <CardHeader>
-      <CardTitle className="text-lg font-bold">Missing Persons Registry</CardTitle>
+      <CardTitle className="text-lg font-bold flex items-center">
+        <Users className="mr-2 h-5 w-5 text-red-500" />
+        Missing Persons Registry
+      </CardTitle>
       <CardDescription className="text-zinc-400">Search and manage missing person reports</CardDescription>
     </CardHeader>
     <CardContent>
       <div className="space-y-4">
         <div className="flex space-x-2">
-          <Input placeholder="Search missing persons..." className="bg-zinc-800 text-white border-zinc-700" />
-          <Button variant="outline" size="icon" className="bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700">
-            <Search className="h-4 w-4" />
-          </Button>
+          <Input placeholder="Search missing persons..." className="bg-zinc-800 text-white border-zinc-700 flex-grow" />
           <Button variant="outline" size="icon" className="bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700">
             <Search className="h-4 w-4" />
           </Button>
         </div>
-        <ScrollArea className="h-[200px]">
+        <ScrollArea className="h-[200px] w-full rounded-md border border-zinc-800">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="flex items-center space-x-4 py-2 border-b border-zinc-800 last:border-b-0">
-              <div className="w-12 h-12 bg-zinc-800 rounded-full" />
-              <div>
-                <h3 className="font-semibold">John Doe</h3>
-                <p className="text-sm text-zinc-400">Last seen: Central Park, 2 hours ago</p>
+            <div key={i} className="flex items-center space-x-4 p-4 border-b border-zinc-800 last:border-b-0">
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={`https://i.pravatar.cc/40?img=${i+1}`} />
+                <AvatarFallback>JD</AvatarFallback>
+              </Avatar>
+              <div className="flex-grow">
+                <h3 className="font-semibold">John Doe {i+1}</h3>
+                <p className="text-sm text-zinc-400">Last seen: Central Park, {2+i} hours ago</p>
               </div>
               <Badge variant={i % 2 === 0 ? 'default' : 'outline'} className="ml-auto">
                 {i % 2 === 0 ? 'Active' : 'Found'}
@@ -91,8 +95,8 @@ const MissingPersonsRegistry = () => (
         title="Report Missing Person" 
         description="Please provide details about the missing person."
         trigger={
-          <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
-            <Users className="mr-2 h-4 w-4" />
+          <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
+            <AlertTriangle className="mr-2 h-4 w-4" />
             Report Missing Person
           </Button>
         }
@@ -117,7 +121,7 @@ const MissingPersonsRegistry = () => (
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white">Submit Report</Button>
+            <Button type="submit" className="bg-red-500 hover:bg-red-600 text-white">Submit Report</Button>
           </DialogFooter>
         </form>
       </FormDialog>
@@ -128,16 +132,27 @@ const MissingPersonsRegistry = () => (
 const EmergencyServiceStatus = () => (
   <Card className="bg-zinc-900 text-white border-zinc-800 h-full">
     <CardHeader>
-      <CardTitle className="text-lg font-bold">Emergency Service Status</CardTitle>
+      <CardTitle className="text-lg font-bold flex items-center">
+        <Siren className="mr-2 h-5 w-5 text-yellow-500" />
+        Emergency Service Status
+      </CardTitle>
       <CardDescription className="text-zinc-400">Real-time status of emergency services</CardDescription>
     </CardHeader>
     <CardContent>
       <div className="space-y-4">
-        {['Fire Department', 'Police', 'Ambulance', 'Hospital'].map((service, i) => (
-          <div key={i} className="flex items-center justify-between">
-            <span>{service}</span>
-            <Badge variant={i % 2 === 0 ? 'default' : 'secondary'} className={i % 2 === 0 ? 'bg-green-500 text-white' : 'bg-yellow-500 text-black'}>
-              {i % 2 === 0 ? 'Available' : 'High Demand'}
+        {[
+          { name: 'Fire Department', icon: AlertCircle, status: 'Available' },
+          { name: 'Police', icon: Shield, status: 'High Demand' },
+          { name: 'Ambulance', icon: Ambulance, status: 'Available' },
+          { name: 'Hospital', icon: FirstAid, status: 'High Demand' }
+        ].map((service, i) => (
+          <div key={i} className="flex items-center justify-between p-3 bg-zinc-800 rounded-lg">
+            <div className="flex items-center space-x-3">
+              <service.icon className="h-5 w-5 text-zinc-400" />
+              <span>{service.name}</span>
+            </div>
+            <Badge variant={service.status === 'Available' ? 'default' : 'secondary'} className={service.status === 'Available' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-black'}>
+              {service.status}
             </Badge>
           </div>
         ))}
@@ -190,7 +205,10 @@ const EmergencyServiceStatus = () => (
 const EmergencyShelterHub = () => (
   <Card className="bg-zinc-900 text-white border-zinc-800 h-full">
     <CardHeader>
-      <CardTitle className="text-lg font-bold">Emergency Shelter Hub</CardTitle>
+      <CardTitle className="text-lg font-bold flex items-center">
+        <Tent className="mr-2 h-5 w-5 text-blue-500" />
+        Emergency Shelter Hub
+      </CardTitle>
       <CardDescription className="text-zinc-400">Real-time shelter capacity and resource information</CardDescription>
     </CardHeader>
     <CardContent>
@@ -200,36 +218,37 @@ const EmergencyShelterHub = () => (
           <TabsTrigger value="resources" className="data-[state=active]:bg-zinc-700">Resources</TabsTrigger>
           <TabsTrigger value="transport" className="data-[state=active]:bg-zinc-700">Transport</TabsTrigger>
         </TabsList>
-        <TabsContent value="capacity" className="space-y-4">
+        <TabsContent value="capacity" className="space-y-4 mt-4">
           {['Shelter A', 'Shelter B', 'Shelter C'].map((shelter, i) => (
-            <div key={i} className="flex items-center justify-between">
+            <div key={i} className="flex items-center justify-between bg-zinc-800 p-3 rounded-lg">
               <span>{shelter}</span>
               <div className="flex items-center space-x-2">
-                <Progress 
-                  value={75 - i * 15} 
-                  className="w-[100px] [&>div]:bg-blue-500" 
-                />
+                <Progress value={75 - i * 15} className="w-[100px] [&>div]:bg-blue-500" />
                 <span className="text-sm">{75 - i * 15}%</span>
               </div>
             </div>
           ))}
         </TabsContent>
-        <TabsContent value="resources" className="space-y-2">
-          <p>Food: Sufficient for 3 days</p>
-          <p>Water: Sufficient for 5 days</p>
-          <p>Medical Supplies: Limited</p>
-          <p>Blankets: Adequate</p>
+        <TabsContent value="resources" className="space-y-2 mt-4">
+          <div className="bg-zinc-800 p-4 rounded-lg space-y-2">
+            <p className="flex justify-between"><span>Food:</span> <span className="text-green-500">Sufficient for 3 days</span></p>
+            <p className="flex justify-between"><span>Water:</span> <span className="text-green-500">Sufficient for 5 days</span></p>
+            <p className="flex justify-between"><span>Medical Supplies:</span> <span className="text-yellow-500">Limited</span></p>
+            <p className="flex justify-between"><span>Blankets:</span> <span className="text-green-500">Adequate</span></p>
+          </div>
         </TabsContent>
-        <TabsContent value="transport" className="space-y-2">
-          <p>Buses: 5 available</p>
-          <p>Pickup Points: 3 active</p>
-          <p>Next Departure: 15 minutes</p>
+        <TabsContent value="transport" className="space-y-2 mt-4">
+          <div className="bg-zinc-800 p-4 rounded-lg space-y-2">
+            <p className="flex justify-between"><span>Buses:</span> <span>5 available</span></p>
+            <p className="flex justify-between"><span>Pickup Points:</span> <span>3 active</span></p>
+            <p className="flex justify-between"><span>Next Departure:</span> <span>15 minutes</span></p>
+          </div>
         </TabsContent>
       </Tabs>
     </CardContent>
     <CardFooter>
       <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
-        <Tent className="mr-2 h-4 w-4" />
+        <Map className="mr-2 h-4 w-4" />
         Find Nearest Shelter
       </Button>
     </CardFooter>
@@ -239,57 +258,55 @@ const EmergencyShelterHub = () => (
 const EmergencyCommandCenter = () => (
   <Card className="bg-zinc-900 text-white border-zinc-800 h-full">
     <CardHeader>
-      <CardTitle className="text-lg font-bold">Emergency Command Center</CardTitle>
+      <CardTitle className="text-lg font-bold flex items-center">
+        <AlertCircle className="mr-2 h-5 w-5 text-orange-500" />
+        Emergency Command Center
+      </CardTitle>
       <CardDescription className="text-zinc-400">Real-time status of critical infrastructure</CardDescription>
     </CardHeader>
     <CardContent>
       <div className="grid grid-cols-2 gap-4">
-        <Card className="bg-zinc-800 border-zinc-700">
-          <CardHeader className="p-4">
-            <CardTitle className="text-sm font-medium">Electricity</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Badge variant="outline" className="bg-green-500 text-white">Available</Badge>
-          </CardContent>
-        </Card>
-        <Card className="bg-zinc-800 border-zinc-700">
-          <CardHeader className="p-4">
-            <CardTitle className="text-sm font-medium">Gas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Badge variant="outline" className="bg-green-500 text-white">Available</Badge>
-          </CardContent>
-        </Card>
-        <Card className="bg-zinc-800 border-zinc-700">
-          <CardHeader className="p-4">
-            <CardTitle className="text-sm font-medium">Tubewell</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Badge variant="outline" className="bg-red-500 text-white">Sinked</Badge>
-          </CardContent>
-        </Card>
-        <Card className="bg-zinc-800 border-zinc-700">
-          <CardHeader className="p-4">
-            <CardTitle className="text-sm font-medium">Shelter</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Badge variant="outline" className="bg-green-500 text-white">Ready</Badge>
-          </CardContent>
-        </Card>
+        {[
+          { name: 'Electricity', icon: Zap, status: 'Available' },
+          { name: 'Gas', icon: Flame, status: 'Available' },
+          { name: 'Water', icon: Droplet, status: 'Limited' },
+          { name: 'Shelter', icon: Home, status: 'Ready' }
+        ].map((item, i) => (
+          <Card key={i} className="bg-zinc-800 border-zinc-700">
+            <CardHeader className="p-4">
+              <CardTitle className="text-sm font-medium flex items-center">
+                <item.icon className="mr-2 h-4 w-4" />
+                {item.name}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Badge 
+                variant="outline" 
+                className={
+                  item.status === 'Available' ? 'bg-green-500 text-white' : 
+                  item.status === 'Limited' ? 'bg-yellow-500 text-black' : 
+                  'bg-red-500 text-white'
+                }
+              >
+                {item.status}
+              </Badge>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </CardContent>
   </Card>
 )
 
 const CommunitySupportNetwork = () => {
-  const [activeTab, setActiveTab] = useState('volunteers')
+  const [activeTab, setActiveTab] = React.useState('volunteers')
 
   const volunteerData = [
-    { name: 'John Doe', phone: '123-456-7890' },
-    { name: 'Jane Smith', phone: '234-567-8901' },
-    { name: 'Alice Johnson', phone: '345-678-9012' },
-    { name: 'Bob Williams', phone: '456-789-0123' },
-    { name: 'Charlie Brown', phone: '567-890-1234' },
+    { name: 'John Doe', phone: '123-456-7890', skills: 'First Aid, Driving' },
+    { name: 'Jane Smith', phone: '234-567-8901', skills: 'Cooking, Child Care' },
+    { name: 'Alice Johnson', phone: '345-678-9012', skills: 'Medical, Search and Rescue' },
+    { name: 'Bob Williams', phone: '456-789-0123', skills: 'Construction, Heavy Lifting' },
+    { name: 'Charlie Brown', phone: '567-890-1234', skills: 'Counseling, Logistics' },
   ]
 
   const resourceData = [
@@ -311,7 +328,10 @@ const CommunitySupportNetwork = () => {
   return (
     <Card className="bg-zinc-900 text-white border-zinc-800">
       <CardHeader>
-        <CardTitle className="text-lg font-bold">Community Support Network</CardTitle>
+        <CardTitle className="text-lg font-bold flex items-center">
+          <Users className="mr-2 h-5 w-5 text-green-500" />
+          Community Support Network
+        </CardTitle>
         <CardDescription className="text-zinc-400">Coordinate community efforts and resources</CardDescription>
       </CardHeader>
       <CardContent>
@@ -321,15 +341,18 @@ const CommunitySupportNetwork = () => {
             <TabsTrigger value="resources" className="data-[state=active]:bg-zinc-700">Resources</TabsTrigger>
             <TabsTrigger value="requests" className="data-[state=active]:bg-zinc-700">Requests</TabsTrigger>
           </TabsList>
-          <TabsContent value="volunteers" className="space-y-4">
+          <TabsContent value="volunteers" className="space-y-4 mt-4">
             <div className="flex justify-between items-center">
               <span>Active Volunteers</span>
-              <Badge className="bg-blue-500 text-white">{volunteerData.length}</Badge>
+              <Badge className="bg-green-500 text-white">{volunteerData.length}</Badge>
             </div>
             <ScrollArea className="h-[200px] w-full rounded-md border border-zinc-700 p-4">
               {volunteerData.map((volunteer, index) => (
-                <div key={index} className="flex justify-between items-center py-2 border-b border-zinc-700 last:border-b-0">
-                  <span>{volunteer.name}</span>
+                <div key={index} className="flex justify-between items-center py-3 border-b border-zinc-700 last:border-b-0">
+                  <div>
+                    <span className="font-medium">{volunteer.name}</span>
+                    <p className="text-sm text-zinc-400">{volunteer.skills}</p>
+                  </div>
                   <span className="text-zinc-400 flex items-center">
                     <Phone className="h-4 w-4 mr-2" />
                     {volunteer.phone}
@@ -358,21 +381,23 @@ const CommunitySupportNetwork = () => {
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white">Register</Button>
+                  <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white">Register</Button>
                 </DialogFooter>
               </form>
             </FormDialog>
           </TabsContent>
-          <TabsContent value="resources" className="space-y-4">
+          <TabsContent value="resources" className="space-y-4 mt-4">
             <div className="flex justify-between items-center">
               <span>Shared Resources</span>
               <Badge className="bg-blue-500 text-white">{resourceData.length}</Badge>
             </div>
             <ScrollArea className="h-[200px] w-full rounded-md border border-zinc-700 p-4">
               {resourceData.map((resource, index) => (
-                <div key={index} className="flex justify-between items-center py-2 border-b border-zinc-700 last:border-b-0">
-                  <span>{resource.type}</span>
-                  <span className="text-zinc-400">{resource.quantity}</span>
+                <div key={index} className="flex justify-between items-center py-3 border-b border-zinc-700 last:border-b-0">
+                  <div>
+                    <span className="font-medium">{resource.type}</span>
+                    <p className="text-sm text-zinc-400">{resource.quantity}</p>
+                  </div>
                   <span className="text-zinc-400">{resource.provider}</span>
                 </div>
               ))}
@@ -403,19 +428,21 @@ const CommunitySupportNetwork = () => {
               </form>
             </FormDialog>
           </TabsContent>
-          <TabsContent value="requests" className="space-y-4">
+          <TabsContent value="requests" className="space-y-4 mt-4">
             <div className="flex justify-between items-center">
               <span>Help Requests</span>
-              <Badge className="bg-blue-500 text-white">{requestData.length}</Badge>
+              <Badge className="bg-red-500 text-white">{requestData.length}</Badge>
             </div>
             <ScrollArea className="h-[200px] w-full rounded-md border border-zinc-700 p-4">
               {requestData.map((request, index) => (
-                <div key={index} className="flex justify-between items-center py-2 border-b border-zinc-700 last:border-b-0">
-                  <span>{request.type}</span>
+                <div key={index} className="flex justify-between items-center py-3 border-b border-zinc-700 last:border-b-0">
+                  <div>
+                    <span className="font-medium">{request.type}</span>
+                    <p className="text-sm text-zinc-400">Requested by: {request.requester}</p>
+                  </div>
                   <Badge variant={request.urgency === 'High' ? 'destructive' : request.urgency === 'Medium' ? 'default' : 'secondary'}>
                     {request.urgency}
                   </Badge>
-                  <span className="text-zinc-400">{request.requester}</span>
                 </div>
               ))}
             </ScrollArea>
@@ -453,19 +480,13 @@ const CommunitySupportNetwork = () => {
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white">Submit Request</Button>
+                  <Button type="submit" className="bg-red-500 hover:bg-red-600 text-white">Submit Request</Button>
                 </DialogFooter>
               </form>
             </FormDialog>
           </TabsContent>
         </Tabs>
       </CardContent>
-      <CardFooter>
-        <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
-          <Heart className="mr-2 h-4 w-4" />
-          Join Community Support
-        </Button>
-      </CardFooter>
     </Card>
   )
 }
@@ -481,32 +502,29 @@ export function EmergencyPageComponent() {
         </Avatar>
       </header>
 
-      <div className="grid gap-8 md:grid-cols-2">
-        <motion.div variants={cardVariants} initial="hidden" animate="visible" className="grid gap-8">
-          <Card className="bg-zinc-900 text-white border-zinc-800">
-            <CardContent className="p-0">
-              <div className="grid md:grid-cols-2 gap-4">
-                <MissingPersonsRegistry />
-                <EmergencyServiceStatus />
-              </div>
-            </CardContent>
-          </Card>
+      <div className="grid gap-8">
+        <motion.div variants={cardVariants} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-8">
+          <MissingPersonsRegistry />
+          <EmergencyServiceStatus />
         </motion.div>
-        <motion.div variants={cardVariants} initial="hidden" animate="visible" transition={{ delay: 0.2 }} className="grid gap-8">
-          <Card className="bg-zinc-900 text-white border-zinc-800">
-            <CardContent className="p-0">
-              <div className="grid md:grid-cols-2 gap-4">
-                <EmergencyShelterHub />
-                <EmergencyCommandCenter />
-              </div>
-            </CardContent>
-          </Card>
+
+        <motion.div variants={cardVariants} initial="hidden" animate="visible" transition={{ delay: 0.2 }} className="grid md:grid-cols-2 gap-8">
+          <EmergencyShelterHub />
+          <EmergencyCommandCenter />
+        </motion.div>
+
+        <motion.div variants={cardVariants} initial="hidden" animate="visible" transition={{ delay: 0.4 }}>
+          <CommunitySupportNetwork />
         </motion.div>
       </div>
-      
-      <motion.div variants={cardVariants} initial="hidden" animate="visible" transition={{ delay: 0.4 }} className="mt-8">
-        <CommunitySupportNetwork />
-      </motion.div>
+
+      <Script
+        src="https://api.windy.com/assets/map-forecast/libBoot.js"
+        strategy="beforeInteractive"
+        onError={(e) => {
+          console.error('Error loading Windy script:', e);
+        }}
+      />
     </div>
   )
 }

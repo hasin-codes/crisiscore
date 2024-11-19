@@ -4,21 +4,41 @@ A comprehensive emergency management system built with Next.js, featuring real-t
 
 ## Features
 
+### Emergency Response
 - Real-time Emergency Alerts
+- Emergency Service Status Tracking
+- Interactive Windy Maps Integration
 - Missing Persons Registry
-- Emergency Service Status
-- Shelter Management
-- Community Support Network
-- Preparedness Planning
+- Emergency Shelter Management
+
+### Community Support
+- Volunteer Management
+- Resource Sharing Network
+- Help Request System
+- Community Support Coordination
+
+### Weather & Environmental Monitoring
+- Real-time Weather Data via Windy API
+- Impact Zone Visualization
+- Severity Level Tracking
+- Timeline Management
 
 ## Tech Stack
 
-- Next.js 14
-- TypeScript
-- Tailwind CSS
-- Shadcn/ui
-- Framer Motion
-- Lucide Icons
+- **Frontend Framework**: Next.js 14
+- **Language**: TypeScript
+- **Styling**: 
+  - Tailwind CSS
+  - Shadcn/ui Components
+- **Animations**: Framer Motion
+- **Icons**: Lucide Icons
+- **Maps**: Windy API & Leaflet
+- **UI Components**:
+  - Custom Card Components
+  - Dynamic Forms
+  - Interactive Tabs
+  - Progress Indicators
+  - Responsive Layouts
 
 ## Getting Started
 

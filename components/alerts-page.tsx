@@ -10,6 +10,8 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Input } from '@/components/ui/input'
 import { motion, AnimatePresence } from 'framer-motion'
+import { DynamicWindyMap } from '@/components/ui/dynamic-windy-map'
+import ClientOnly from '@/components/ui/client-only'
 
 // Color palette export
 export const colorPalette = {
@@ -121,8 +123,8 @@ export function AlertsPageComponent() {
               {/* Impact Zone */}
               <div>
                 <h3 className="font-semibold mb-2">Impact Zone</h3>
-                <div className="aspect-video bg-zinc-800 rounded-md flex items-center justify-center">
-                  <p className="text-zinc-400">Interactive map placeholder</p>
+                <div className="aspect-video">
+                  <DynamicWindyMap />
                 </div>
               </div>
 
