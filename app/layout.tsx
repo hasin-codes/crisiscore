@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster"
+import Script from 'next/script'
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,12 +28,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
-        <script src="https://api.windy.com/assets/map-forecast/libBoot.js?use=leaflet"></script>
-      </head>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
+      <head />
       <body suppressHydrationWarning>
+        <Script 
+          src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+          strategy="afterInteractive"
+        />
+        <Script 
+          src="https://api.windy.com/assets/map-forecast/libBoot.js?use=leaflet"
+          strategy="afterInteractive"
+        />
         {children}
         <Toaster />
       </body>

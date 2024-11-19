@@ -8,27 +8,45 @@ interface WindyMapProps {
   height?: string;
 }
 
+interface WindyAPI {
+  map: L.Map;
+  store: {
+    set: (key: string, value: string) => void;
+  };
+}
+
 declare global {
   interface Window {
-    windyInit: any;
-    L: any;
+    windyInit: (options: WindyOptions, callback: (api: WindyAPI) => void) => void;
+    L: typeof L;
   }
+}
+
+interface WindyOptions {
+  key: string;
+  lat: number;
+  lon: number;
+  zoom: number;
+  container: HTMLElement | string;
 }
 
 export function WindyMap({ className = "", height = "400px" }: WindyMapProps) {
   useEffect(() => {
+    const windyContainer = document.getElementById('windy')
+    if (!windyContainer) return
+
     // Basic options
-    const options = {
+    const options: WindyOptions = {
       key: 'UNCGlTSf0dcRpJzJOb5dD1Cqo3ox8QgM',
       lat: 50.4,
       lon: 14.3,
       zoom: 5,
-      container: document.getElementById('windy')
+      container: windyContainer
     }
 
     // Initialize Windy API
-    window.windyInit(options, (windyAPI: any) => {
-      const { map, store } = windyAPI
+    window.windyInit(options, (windyAPI: WindyAPI) => {
+      const { store } = windyAPI
       store.set('overlay', 'wind')
     })
   }, [])
