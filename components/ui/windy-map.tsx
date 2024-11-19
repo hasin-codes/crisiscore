@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react'
 import ClientOnly from '@/components/ui/client-only'
+import type { Map } from 'leaflet'
 
 interface WindyMapProps {
   className?: string;
@@ -9,7 +10,7 @@ interface WindyMapProps {
 }
 
 interface WindyAPI {
-  map: L.Map;
+  map: Map;
   store: {
     set: (key: string, value: string) => void;
   };
@@ -18,7 +19,7 @@ interface WindyAPI {
 declare global {
   interface Window {
     windyInit: (options: WindyOptions, callback: (api: WindyAPI) => void) => void;
-    L: typeof L;
+    L: any;
   }
 }
 
