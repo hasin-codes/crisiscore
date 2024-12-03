@@ -1,8 +1,8 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'framer-motion'
-import { AlertCircle, Bell, ChevronDown, ChevronUp, Filter, Map, Menu, MessageCircle, Search, Settings, Share2, Users, Tent, Package, Siren, Heart, UserPlus, HelpingHand, FileQuestion, User, Phone, AlertTriangle, Shield, Ambulance, AmbulanceIcon as FirstAid, Zap, Flame, Droplet, Home } from 'lucide-react'
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion"
+import { AlertCircle, Bell, ChevronDown, ChevronUp, Filter, Map, Menu, MessageCircle, Search, Settings, Share2, Users, Tent, Package, Siren, Heart, UserPlus, HelpingHand, FileQuestion, User, Phone, AlertTriangle, Shield, Ambulance, AmbulanceIcon as FirstAid, Zap, Flame, Droplet, Home, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -18,6 +18,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { toast } from '@/components/ui/use-toast'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Script from 'next/script'
+import { cn } from "@/lib/utils"
+import { Spotlight } from "@/components/ui/spotlight"
+import { Checkbox } from "@/components/ui/checkbox"
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -36,10 +39,10 @@ const FormDialog = ({ title, description, children, trigger }: FormDialogProps) 
     <DialogTrigger asChild>
       {trigger}
     </DialogTrigger>
-    <DialogContent className="sm:max-w-[425px] bg-zinc-900 text-white">
+    <DialogContent className="sm:max-w-[425px] bg-black/30 backdrop-blur-2xl border border-zinc-800/50 text-white shadow-xl">
       <DialogHeader>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
+        <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
+        <DialogDescription className="text-zinc-400">{description}</DialogDescription>
       </DialogHeader>
       {children}
     </DialogContent>
@@ -55,7 +58,11 @@ const handleFormSubmit = (formName: string) => (e: React.FormEvent) => {
 }
 
 const MissingPersonsRegistry = () => (
-  <Card className="bg-zinc-900 text-white border-zinc-800 h-full">
+  <Card className="bg-zinc-900 text-white border-zinc-800 h-full relative overflow-hidden">
+    <Spotlight
+      className="-top-40 left-0"
+      fill="white"
+    />
     <CardHeader>
       <CardTitle className="text-lg font-bold flex items-center">
         <Users className="mr-2 h-5 w-5 text-red-500" />
@@ -66,7 +73,7 @@ const MissingPersonsRegistry = () => (
     <CardContent>
       <div className="space-y-4">
         <div className="flex space-x-2">
-          <Input placeholder="Search missing persons..." className="bg-zinc-800 text-white border-zinc-700 flex-grow" />
+          <Input placeholder="Search missing persons..." className="bg-black/50 backdrop-blur-sm text-white border-zinc-700 placeholder:text-zinc-400 flex-grow" />
           <Button variant="outline" size="icon" className="bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700">
             <Search className="h-4 w-4" />
           </Button>
@@ -101,27 +108,90 @@ const MissingPersonsRegistry = () => (
           </Button>
         }
       >
-        <form onSubmit={handleFormSubmit("Missing Person Report")}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">Name</Label>
-              <Input id="name" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
+        <form onSubmit={handleFormSubmit("Missing Person Report")} className="space-y-6">
+          <div className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Full Name</Label>
+              <FancyInput 
+                placeholder="Enter full name" 
+                className="w-full"
+              />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="age" className="text-right">Age</Label>
-              <Input id="age" className="col-span-3 bg-zinc-800 text-white border-zinc-700" type="number" />
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-sm font-medium mb-2 block">Gender</Label>
+              <Select>
+                  <SelectTrigger className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700">
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="non-binary">Non-Binary</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="lastSeen" className="text-right">Last Seen</Label>
-              <Input id="lastSeen" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
+              <div>
+                <Label className="text-sm font-medium mb-2 block">Date of Birth</Label>
+                <FancyInput type="date" className="w-full" />
+              </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right">Description</Label>
-              <Textarea id="description" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-sm font-medium mb-2 block">Height (cm)</Label>
+                <FancyInput type="number" placeholder="Height in cm" className="w-full" />
+            </div>
+              <div>
+                <Label className="text-sm font-medium mb-2 block">Weight (kg)</Label>
+                <FancyInput type="number" placeholder="Weight in kg" className="w-full" />
+            </div>
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Last Seen Location</Label>
+              <FancyInput placeholder="Enter location details" className="w-full" />
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Last Seen Date/Time</Label>
+              <FancyInput type="datetime-local" className="w-full" />
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Clothing Description</Label>
+              <Textarea 
+                placeholder="Describe what they were wearing" 
+                className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700 rounded-md placeholder:text-zinc-400"
+              />
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Medical Conditions</Label>
+              <Textarea 
+                placeholder="List any medical conditions" 
+                className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700 rounded-md placeholder:text-zinc-400"
+              />
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Distinguishing Features</Label>
+              <Textarea 
+                placeholder="Birthmarks, scars, tattoos, etc." 
+                className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700 rounded-md placeholder:text-zinc-400"
+              />
             </div>
           </div>
+
           <DialogFooter>
-            <Button type="submit" className="bg-red-500 hover:bg-red-600 text-white">Submit Report</Button>
+            <Button 
+              type="submit" 
+              className="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 rounded-lg transition-colors"
+            >
+              Submit Report →
+            </Button>
           </DialogFooter>
         </form>
       </FormDialog>
@@ -174,7 +244,7 @@ const EmergencyServiceStatus = () => (
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="serviceType" className="text-right">Service Type</Label>
               <Select>
-                <SelectTrigger className="col-span-3 bg-zinc-800 text-white border-zinc-700">
+                <SelectTrigger className="col-span-3 bg-black/50 backdrop-blur-sm text-white border-zinc-700">
                   <SelectValue placeholder="Select service type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -186,11 +256,11 @@ const EmergencyServiceStatus = () => (
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="location" className="text-right">Location</Label>
-              <Input id="location" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
+              <Input id="location" className="col-span-3 bg-black/50 backdrop-blur-sm text-white border-zinc-700" />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="emergencyDetails" className="text-right">Emergency Details</Label>
-              <Textarea id="emergencyDetails" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
+              <Textarea id="emergencyDetails" className="col-span-3 bg-black/50 backdrop-blur-sm text-white border-zinc-700" />
             </div>
           </div>
           <DialogFooter>
@@ -298,6 +368,312 @@ const EmergencyCommandCenter = () => (
   </Card>
 )
 
+type Step = {
+  id: number;
+  name: string;
+  fields: string[];
+}
+
+const FormStepper = ({ currentStep, steps }: { currentStep: number, steps: Step[] }) => (
+  <div className="relative flex justify-between mb-8">
+    {steps.map((step, i) => (
+      <div key={step.id} className="flex flex-col items-center">
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 
+          ${i < currentStep 
+            ? 'bg-green-500 border-green-500 text-white' 
+            : i === currentStep 
+              ? 'border-blue-500 text-blue-500' 
+              : 'border-zinc-600 text-zinc-600'}`}
+        >
+          {i < currentStep ? <Check className="w-4 h-4" /> : step.id}
+        </div>
+        <span className="text-xs mt-1 text-zinc-400">{step.name}</span>
+        {i < steps.length - 1 && (
+          <div className={`absolute top-4 left-0 h-[2px] 
+            ${i < currentStep ? 'bg-green-500' : 'bg-zinc-600'}`} 
+            style={{
+              width: `${100 / (steps.length - 1)}%`,
+              left: `${(100 / (steps.length - 1)) * i}%`
+            }}
+          />
+        )}
+      </div>
+    ))}
+  </div>
+)
+
+const VolunteerRegistrationForm = () => {
+  const [currentStep, setCurrentStep] = React.useState(0)
+  
+  const steps: Step[] = [
+    { id: 1, name: 'Personal Info', fields: ['name', 'dob', 'gender'] },
+    { id: 2, name: 'Emergency Contact', fields: ['emergencyName', 'relationship', 'phone'] },
+    { id: 3, name: 'Availability', fields: ['availability', 'location', 'travel'] },
+    { id: 4, name: 'Skills', fields: ['background', 'experience', 'skills'] },
+    { id: 5, name: 'Health', fields: ['health', 'conditions', 'allergies'] },
+    { id: 6, name: 'Agreement', fields: ['consent', 'waiver', 'privacy'] },
+    { id: 7, name: 'Review', fields: ['review'] }
+  ]
+
+  const renderStep = () => {
+    switch(currentStep) {
+      case 0:
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Full Name</Label>
+              <FancyInput placeholder="Enter your full name" />
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Date of Birth</Label>
+              <FancyInput type="date" />
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Gender</Label>
+              <Select>
+                <SelectTrigger className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700">
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="non-binary">Non-binary</SelectItem>
+                  <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Primary Phone Number</Label>
+              <FancyInput placeholder="Enter phone number" type="tel" />
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Email Address (Optional)</Label>
+              <FancyInput placeholder="Enter email address" type="email" />
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Residential Address</Label>
+              <Textarea 
+                placeholder="Enter your address" 
+                className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700 rounded-md"
+              />
+            </div>
+          </div>
+        )
+      
+      case 1:
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Emergency Contact Name</Label>
+              <FancyInput placeholder="Enter emergency contact name" />
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Relationship</Label>
+              <Select>
+                <SelectTrigger className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700">
+                  <SelectValue placeholder="Select relationship" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="parent">Parent</SelectItem>
+                  <SelectItem value="sibling">Sibling</SelectItem>
+                  <SelectItem value="spouse">Spouse</SelectItem>
+                  <SelectItem value="friend">Friend</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Emergency Contact Number</Label>
+              <FancyInput placeholder="Enter emergency contact number" type="tel" />
+            </div>
+          </div>
+        )
+
+      case 2:
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Availability Days</Label>
+              <Select>
+                <SelectTrigger className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700">
+                  <SelectValue placeholder="Select available days" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="weekdays">Weekdays</SelectItem>
+                  <SelectItem value="weekends">Weekends</SelectItem>
+                  <SelectItem value="all">All Days</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Preferred Location</Label>
+              <FancyInput placeholder="Enter preferred location" />
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox id="travel" className="bg-black/50" />
+              <Label htmlFor="travel">Willing to travel</Label>
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Maximum Travel Distance (km)</Label>
+              <FancyInput type="number" placeholder="Enter maximum travel distance" />
+            </div>
+          </div>
+        )
+
+      case 3:
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Professional Background</Label>
+              <Select>
+                <SelectTrigger className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700">
+                  <SelectValue placeholder="Select background" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="healthcare">Healthcare</SelectItem>
+                  <SelectItem value="engineering">Engineering</SelectItem>
+                  <SelectItem value="logistics">Logistics</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Relevant Experience</Label>
+              <Textarea 
+                placeholder="Describe your relevant experience" 
+                className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700 rounded-md"
+              />
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Skills</Label>
+              <div className="space-y-2">
+                {[
+                  'First Aid/CPR',
+                  'Counseling/Support',
+                  'Cooking',
+                  'Driving',
+                  'Repairs',
+                  'Logistics'
+                ].map((skill) => (
+                  <div key={skill} className="flex items-center space-x-2">
+                    <Checkbox id={skill} className="bg-black/50" />
+                    <Label htmlFor={skill}>{skill}</Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+
+      case 4:
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Physical Health Status</Label>
+              <Select>
+                <SelectTrigger className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700">
+                  <SelectValue placeholder="Select health status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="excellent">Excellent</SelectItem>
+                  <SelectItem value="good">Good</SelectItem>
+                  <SelectItem value="moderate">Moderate</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Medical Conditions (Optional)</Label>
+              <Textarea 
+                placeholder="List any medical conditions" 
+                className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700 rounded-md"
+              />
+            </div>
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Allergies/Dietary Restrictions</Label>
+              <Textarea 
+                placeholder="List any allergies or dietary restrictions" 
+                className="w-full bg-black/50 backdrop-blur-sm text-white border-zinc-700 rounded-md"
+              />
+            </div>
+          </div>
+        )
+
+      case 5:
+        return (
+          <div className="space-y-4">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="background-check" className="bg-black/50" />
+                <Label htmlFor="background-check">
+                  I consent to a background check if required
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox id="liability" className="bg-black/50" />
+                <Label htmlFor="liability">
+                  I understand the risks involved and agree to participate willingly
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox id="privacy" className="bg-black/50" />
+                <Label htmlFor="privacy">
+                  I agree to the collection and use of my data for volunteer management
+                </Label>
+              </div>
+            </div>
+          </div>
+        )
+
+      case 6:
+        return (
+          <div className="space-y-4">
+            <div className="bg-black/30 p-4 rounded-lg">
+              <h3 className="font-medium mb-2">Review Your Information</h3>
+              <p className="text-sm text-zinc-400">
+                Please review all the information you've provided. You can go back to any previous step to make changes.
+              </p>
+              {/* Add a summary of all entered information here */}
+            </div>
+          </div>
+        )
+
+      default:
+        return null
+    }
+  }
+
+  return (
+    <form onSubmit={handleFormSubmit("Volunteer Registration")} className="space-y-6">
+      <FormStepper currentStep={currentStep} steps={steps} />
+      {renderStep()}
+      <div className="flex justify-between mt-6">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+          disabled={currentStep === 0}
+          className="bg-black/50 backdrop-blur-sm"
+        >
+          Previous
+        </Button>
+        <Button
+          type="button"
+          onClick={() => {
+            if (currentStep === steps.length - 1) {
+              // Submit form
+            } else {
+              setCurrentStep(Math.min(steps.length - 1, currentStep + 1))
+            }
+          }}
+          className="bg-green-500 hover:bg-green-600"
+        >
+          {currentStep === steps.length - 1 ? 'Submit' : 'Next'}
+        </Button>
+      </div>
+    </form>
+  )
+}
+
 const CommunitySupportNetwork = () => {
   const [activeTab, setActiveTab] = React.useState('volunteers')
 
@@ -362,28 +738,10 @@ const CommunitySupportNetwork = () => {
             </ScrollArea>
             <FormDialog 
               title="Register as Volunteer" 
-              description="Please provide your information to register as a volunteer."
+              description="Please complete all steps to register as a volunteer."
               trigger={<Button variant="outline" className="w-full bg-zinc-800 text-white hover:bg-zinc-700">Register as Volunteer</Button>}
             >
-              <form onSubmit={handleFormSubmit("Volunteer Registration")}>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="volunteerName" className="text-right">Name</Label>
-                    <Input id="volunteerName" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="volunteerPhone" className="text-right">Phone</Label>
-                    <Input id="volunteerPhone" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="volunteerSkills" className="text-right">Skills</Label>
-                    <Input id="volunteerSkills" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button type="submit" className="bg-green-500 hover:bg-green-600 text-white">Register</Button>
-                </DialogFooter>
-              </form>
+              <VolunteerRegistrationForm />
             </FormDialog>
           </TabsContent>
           <TabsContent value="resources" className="space-y-4 mt-4">
@@ -411,15 +769,15 @@ const CommunitySupportNetwork = () => {
                 <div className="grid gap-4 py-4">
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="resourceType" className="text-right">Resource Type</Label>
-                    <Input id="resourceType" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
+                    <Input id="resourceType" className="col-span-3 bg-black/50 backdrop-blur-sm text-white border-zinc-700" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="resourceQuantity" className="text-right">Quantity</Label>
-                    <Input id="resourceQuantity" className="col-span-3 bg-zinc-800 text-white border-zinc-700" type="number" />
+                    <Input id="resourceQuantity" className="col-span-3 bg-black/50 backdrop-blur-sm text-white border-zinc-700" type="number" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="resourceProvider" className="text-right">Provider</Label>
-                    <Input id="resourceProvider" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
+                    <Input id="resourceProvider" className="col-span-3 bg-black/50 backdrop-blur-sm text-white border-zinc-700" />
                   </div>
                 </div>
                 <DialogFooter>
@@ -455,12 +813,12 @@ const CommunitySupportNetwork = () => {
                 <div className="grid gap-4 py-4">
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="requestType" className="text-right">Request Type</Label>
-                    <Input id="requestType" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
+                    <Input id="requestType" className="col-span-3 bg-black/50 backdrop-blur-sm text-white border-zinc-700" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="requestUrgency" className="text-right">Urgency</Label>
                     <Select>
-                      <SelectTrigger className="col-span-3 bg-zinc-800 text-white border-zinc-700">
+                      <SelectTrigger className="col-span-3 bg-black/50 backdrop-blur-sm text-white border-zinc-700">
                         <SelectValue placeholder="Select urgency level" />
                       </SelectTrigger>
                       <SelectContent>
@@ -472,11 +830,11 @@ const CommunitySupportNetwork = () => {
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="requesterName" className="text-right">Your Name</Label>
-                    <Input id="requesterName" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
+                    <Input id="requesterName" className="col-span-3 bg-black/50 backdrop-blur-sm text-white border-zinc-700" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="requestDetails" className="text-right">Details</Label>
-                    <Textarea id="requestDetails" className="col-span-3 bg-zinc-800 text-white border-zinc-700" />
+                    <Textarea id="requestDetails" className="col-span-3 bg-black/50 backdrop-blur-sm text-white border-zinc-700" />
                   </div>
                 </div>
                 <DialogFooter>
@@ -490,6 +848,59 @@ const CommunitySupportNetwork = () => {
     </Card>
   )
 }
+
+// Add this new Input component based on Aceternity UI
+const FancyInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+  ({ className, type, ...props }, ref) => {
+    const radius = 100;
+    const [visible, setVisible] = React.useState(false);
+
+    let mouseX = useMotionValue(0);
+    let mouseY = useMotionValue(0);
+
+    function handleMouseMove({ currentTarget, clientX, clientY }: any) {
+      let { left, top } = currentTarget.getBoundingClientRect();
+      mouseX.set(clientX - left);
+      mouseY.set(clientY - top);
+    }
+
+    return (
+      <motion.div
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              ${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px,
+              var(--blue-500),
+              transparent 80%
+            )
+          `,
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setVisible(true)}
+        onMouseLeave={() => setVisible(false)}
+        className="p-[2px] rounded-lg transition duration-300 group/input backdrop-blur-sm"
+      >
+        <input
+          type={type}
+          className={cn(
+            `flex h-10 w-full border-none bg-black/50 text-white shadow-input rounded-md px-3 py-2 text-sm 
+            file:border-0 file:bg-transparent file:text-sm file:font-medium 
+            placeholder:text-zinc-400
+            focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-neutral-600
+            disabled:cursor-not-allowed disabled:opacity-50
+            dark:shadow-[0px_0px_1px_1px_var(--neutral-700)]
+            group-hover/input:shadow-none transition duration-400
+            backdrop-blur-sm`,
+            className
+          )}
+          ref={ref}
+          {...props}
+        />
+      </motion.div>
+    );
+  }
+);
+FancyInput.displayName = "FancyInput";
 
 export function EmergencyPageComponent() {
   return (

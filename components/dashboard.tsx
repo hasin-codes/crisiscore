@@ -36,13 +36,57 @@ interface StatCardProps {
   unit: string;
 }
 
+interface CriticalUpdate {
+  id: string
+  title: string
+  status: string
+  severity: 'default' | 'secondary' | 'destructive' | 'outline'
+  icon: string
+  lastUpdated: string
+}
+
+const CRITICAL_UPDATES_DATA: CriticalUpdate[] = [
+  {
+    id: 'emergency-alerts',
+    title: 'Emergency Alerts',
+    status: '2 Active',
+    severity: 'destructive',
+    icon: 'alert-triangle',
+    lastUpdated: '5 mins ago'
+  },
+  {
+    id: 'hospital-capacity',
+    title: 'Hospital Capacity',
+    status: '75% Full',
+    severity: 'secondary',
+    icon: 'hospital',
+    lastUpdated: '5 mins ago'
+  },
+  {
+    id: 'power-grid',
+    title: 'Power Grid',
+    status: 'Stable',
+    severity: 'default',
+    icon: 'zap',
+    lastUpdated: '5 mins ago'
+  },
+  {
+    id: 'network-status',
+    title: 'Network Status',
+    status: 'Online',
+    severity: 'outline',
+    icon: 'wifi',
+    lastUpdated: '5 mins ago'
+  }
+]
+
 const MapComponent = () => (
   <div className="relative w-full h-[400px]">
     <DynamicWindyMap />
   </div>
 )
 
-const AlertCard = ({ Icon, title, status, severity }: AlertCardProps) => (
+const AlertCard = ({ Icon, title, status, severity, lastUpdated }: AlertCardProps & { lastUpdated: string }) => (
   <Card className="bg-zinc-900 border-zinc-800">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle className="text-sm font-medium text-white">
@@ -53,7 +97,7 @@ const AlertCard = ({ Icon, title, status, severity }: AlertCardProps) => (
     </CardHeader>
     <CardContent>
       <div className="text-2xl font-bold text-white">{status}</div>
-      <p className="text-xs text-zinc-400">Last updated: 5 mins ago</p>
+      <p className="text-xs text-zinc-400">Last updated: {lastUpdated}</p>
     </CardContent>
   </Card>
 )
@@ -83,13 +127,36 @@ const StatCard = ({ Icon, title, value, unit }: StatCardProps) => (
   </Card>
 )
 
-const WeatherSection = () => (
-  <section className="grid grid-cols-3 gap-2 sm:gap-4 mb-8">
-    <StatCard Icon={Thermometer} title="Temperature" value={28} unit="°C" />
-    <StatCard Icon={Droplets} title="Precipitation" value={30} unit="%" />
-    <StatCard Icon={Wind} title="Wind Speed" value={15} unit="km/h" />
-  </section>
-)
+const WeatherSection = () => {
+  const weatherData = {
+    temperature: { value: 28, unit: '°C' },
+    precipitation: { value: 30, unit: '%' },
+    windSpeed: { value: 15, unit: 'km/h' }
+  }
+
+  return (
+    <section className="grid grid-cols-3 gap-2 sm:gap-4 mb-8">
+      <StatCard 
+        Icon={Thermometer} 
+        title="Temperature" 
+        value={weatherData.temperature.value} 
+        unit={weatherData.temperature.unit} 
+      />
+      <StatCard 
+        Icon={Droplets} 
+        title="Precipitation" 
+        value={weatherData.precipitation.value} 
+        unit={weatherData.precipitation.unit} 
+      />
+      <StatCard 
+        Icon={Wind} 
+        title="Wind Speed" 
+        value={weatherData.windSpeed.value} 
+        unit={weatherData.windSpeed.unit} 
+      />
+    </section>
+  )
+}
 
 const MapSection = () => (
   <Card className="bg-zinc-900 border-zinc-800 mb-8">
@@ -110,10 +177,16 @@ const CriticalUpdatesSection = () => (
       <CardDescription className="text-zinc-400">Latest emergency alerts and statuses</CardDescription>
     </CardHeader>
     <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <AlertCard Icon={AlertTriangle} title="Emergency Alerts" status="2 Active" severity="destructive" />
-      <AlertCard Icon={Hospital} title="Hospital Capacity" status="75% Full" severity="secondary" />
-      <AlertCard Icon={Zap} title="Power Grid" status="Stable" severity="default" />
-      <AlertCard Icon={Wifi} title="Network Status" status="Online" severity="outline" />
+      {CRITICAL_UPDATES_DATA.map((update) => (
+        <AlertCard 
+          key={update.id}
+          Icon={getIconComponent(update.icon)}
+          title={update.title}
+          status={update.status}
+          severity={update.severity}
+          lastUpdated={update.lastUpdated}
+        />
+      ))}
     </CardContent>
   </Card>
 )
@@ -211,6 +284,17 @@ const CommunityResponseSection = () => (
     </CardContent>
   </Card>
 )
+
+// Helper function to get icon component
+const getIconComponent = (iconName: string) => {
+  const icons = {
+    'alert-triangle': AlertTriangle,
+    'hospital': Hospital,
+    'zap': Zap,
+    'wifi': Wifi
+  }
+  return icons[iconName as keyof typeof icons]
+}
 
 export function DashboardComponent() {
   const [isClient, setIsClient] = useState(false)
