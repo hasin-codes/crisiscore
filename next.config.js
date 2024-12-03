@@ -6,6 +6,9 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
+  },
+  images: {
+    domains: ['github.com', 'img.clerk.com']
   }
 }
 
