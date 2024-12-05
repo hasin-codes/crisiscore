@@ -68,17 +68,17 @@ const ChecklistPlans = () => {
   }, [])
 
   return (
-    <Card className="w-full h-full bg-[#1E1E1E] border-[#2E2E2E]">
+    <Card className="bg-zinc-900 border-zinc-800 h-full">
       <CardHeader>
-        <CardTitle className="text-white">Your AI-Powered Checklist Plan</CardTitle>
-        <CardDescription className="text-[#B0B0B0]">Personalized tasks to enhance your preparedness</CardDescription>
+        <CardTitle className="text-lg font-bold text-white">Your AI-Powered Checklist Plan</CardTitle>
+        <CardDescription className="text-zinc-400">Personalized tasks to enhance your preparedness</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ScrollArea className="h-[400px] w-full pr-4">
+      <CardContent className="flex-1">
+        <ScrollArea className="h-[400px]">
           {tasks.map((task) => (
             <Card 
               key={task.id} 
-              className={`mb-2 ${task.completed ? 'bg-[#3E3E3E]' : 'bg-[#2E2E2E]'} border-[#3E3E3E] transition-colors duration-300 hover:bg-[#4E4E4E]`}
+              className={`mb-2 ${task.completed ? 'bg-zinc-800' : 'bg-zinc-900'} border-zinc-800 transition-colors duration-300 hover:bg-zinc-700`}
               onDoubleClick={() => toggleTask(task.id)}
             >
               <CardContent className="p-3 flex items-center">
@@ -96,8 +96,12 @@ const ChecklistPlans = () => {
           ))}
         </ScrollArea>
       </CardContent>
-      <CardFooter>
-        <Button onClick={generateTasks} disabled={isGenerating} className="w-full bg-[#2E2E2E] text-[#FF5722] border border-[#FF5722] hover:bg-[#3E3E3E]">
+      <CardFooter className="mt-auto">
+        <Button 
+          onClick={generateTasks} 
+          disabled={isGenerating} 
+          className="w-full bg-zinc-800 text-white hover:bg-zinc-700"
+        >
           {isGenerating ? 'Generating...' : 'Regenerate Plan'}
         </Button>
       </CardFooter>
@@ -156,17 +160,23 @@ const EmergencyKitChecklist = () => {
   const calculateProgress = () => {}
 
   return (
-    <Card className="w-full h-full bg-[#1E1E1E] border-[#2E2E2E]">
+    <Card className="bg-zinc-900 border-zinc-800">
       <CardHeader>
-        <CardTitle className="text-white">Emergency Kit Checklist</CardTitle>
-        <CardDescription className="text-[#B0B0B0]">Track your emergency supplies and ensure you're prepared.</CardDescription>
+        <CardTitle className="text-lg font-bold text-white">Emergency Kit Checklist</CardTitle>
+        <CardDescription className="text-zinc-400">Track your emergency supplies</CardDescription>
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 bg-[#2E2E2E]">
-            <TabsTrigger value="essentials" className="text-white data-[state=active]:bg-[#3E3E3E]">Essentials</TabsTrigger>
-            <TabsTrigger value="firstaid" className="text-white data-[state=active]:bg-[#3E3E3E]">First Aid</TabsTrigger>
-            <TabsTrigger value="tools" className="text-white data-[state=active]:bg-[#3E3E3E]">Tools</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 bg-zinc-800">
+            <TabsTrigger value="essentials" className="text-white data-[state=active]:bg-zinc-700">
+              Essentials
+            </TabsTrigger>
+            <TabsTrigger value="firstaid" className="text-white data-[state=active]:bg-zinc-700">
+              First Aid
+            </TabsTrigger>
+            <TabsTrigger value="tools" className="text-white data-[state=active]:bg-zinc-700">
+              Tools
+            </TabsTrigger>
           </TabsList>
           {Object.keys(items).map((category) => (
             <TabsContent key={category} value={category}>
@@ -174,7 +184,7 @@ const EmergencyKitChecklist = () => {
                 {items[category as keyof KitItems].map((item) => (
                   <Card 
                     key={item.id} 
-                    className={`mb-2 ${item.completed ? 'bg-[#3E3E3E]' : 'bg-[#2E2E2E]'} border-[#3E3E3E] transition-colors duration-300 hover:bg-[#4E4E4E]`}
+                    className={`mb-2 ${item.completed ? 'bg-zinc-800' : 'bg-zinc-900'} border-zinc-800 transition-colors duration-300 hover:bg-zinc-700`}
                     onDoubleClick={() => toggleItem(category as keyof KitItems, item.id)}
                   >
                     <CardContent className="p-3 flex items-center">
@@ -196,7 +206,7 @@ const EmergencyKitChecklist = () => {
         </Tabs>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="w-full bg-[#2E2E2E] text-[#FF5722] border border-[#FF5722] hover:bg-[#3E3E3E]">
+        <Button variant="outline" className="w-full bg-zinc-800 text-white hover:bg-zinc-700">
           <Plus className="mr-2 h-4 w-4" />
           Add Custom Item
         </Button>
@@ -217,23 +227,23 @@ const LocalPreparednessInfo = () => {
   }, [])
 
   return (
-    <Card className="w-full h-full bg-[#1E1E1E] border-[#2E2E2E]">
+    <Card className="bg-zinc-900 border-zinc-800 h-full">
       <CardHeader>
         <div className="flex justify-between items-center">
-          <CardTitle className="text-white">Local Preparedness Information</CardTitle>
+          <CardTitle className="text-lg font-bold text-white">Local Preparedness Information</CardTitle>
           {hasNewAlert && (
             <Badge variant="destructive" className="animate-pulse bg-[#FF5722] text-white">
               New Alert
             </Badge>
           )}
         </div>
-        <CardDescription className="text-[#B0B0B0]">Stay informed about your area: {location}</CardDescription>
+        <CardDescription className="text-zinc-400">Stay informed about your area: {location}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="bg-[#2E2E2E] p-4 rounded-md">
+      <CardContent className="flex-1">
+        <div className="space-y-4 h-[300px]">
+          <div className="bg-zinc-800 p-4 rounded-md">
             <h4 className="font-semibold mb-2 text-white">Local Hazards</h4>
-            <ul className="list-disc list-inside text-sm text-[#B0B0B0]">
+            <ul className="list-disc list-inside text-sm text-zinc-400">
               <li>Hurricanes (June to November)</li>
               <li>Flooding in low-lying areas</li>
               <li>Extreme heat waves in summer</li>
@@ -242,11 +252,11 @@ const LocalPreparednessInfo = () => {
           <div>
             <h4 className="font-semibold mb-2 text-white">Emergency Resources</h4>
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" className="text-left justify-start bg-[#2E2E2E] text-[#FF5722] border border-[#FF5722] hover:bg-[#3E3E3E]">
+              <Button variant="outline" className="text-left justify-start bg-zinc-800 text-white hover:bg-zinc-700">
                 <Map className="mr-2 h-4 w-4" />
                 Emergency Shelters
               </Button>
-              <Button variant="outline" className="text-left justify-start bg-[#2E2E2E] text-[#FF5722] border border-[#FF5722] hover:bg-[#3E3E3E]">
+              <Button variant="outline" className="text-left justify-start bg-zinc-800 text-white hover:bg-zinc-700">
                 <Map className="mr-2 h-4 w-4" />
                 Hospitals
               </Button>
@@ -254,8 +264,8 @@ const LocalPreparednessInfo = () => {
           </div>
         </div>
       </CardContent>
-      <CardFooter>
-        <Button className="w-full bg-[#FF5722] text-white hover:bg-[#FF7043]">View Full Map</Button>
+      <CardFooter className="mt-auto">
+        <Button className="w-full bg-zinc-800 text-white hover:bg-zinc-700">View Full Map</Button>
       </CardFooter>
     </Card>
   )
@@ -266,66 +276,70 @@ const PlanStatusOverview = () => {
   const [progress, setProgress] = useState(75)
 
   return (
-    <Card className="w-full h-full bg-[#1E1E1E] border-[#2E2E2E]">
+    <Card className="bg-zinc-900 border-zinc-800 h-full">
       <CardHeader>
-        <CardTitle className="text-white">Plan Status Overview</CardTitle>
-        <CardDescription className="text-[#B0B0B0]">Track your overall preparedness progress</CardDescription>
+        <CardTitle className="text-lg font-bold text-white">Plan Status Overview</CardTitle>
+        <CardDescription className="text-zinc-400">Track your overall preparedness progress</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="flex justify-center items-center mb-4">
-          <div className="relative">
-            <svg className="w-32 h-32">
-              <circle
-                className="text-[#2E2E2E]"
-                strokeWidth="8"
-                stroke="currentColor"
-                fill="transparent"
-                r="58"
-                cx="64"
-                cy="64"
-              />
-              <circle
-                className="text-[#FF5722]"
-                strokeWidth="8"
-                strokeDasharray={58 * 2 * Math.PI}
-                strokeDashoffset={58 * 2 * Math.PI * (1 - progress / 100)}
-                strokeLinecap="round"
-                stroke="currentColor"
-                fill="transparent"
-                r="58"
-                cx="64"
-                cy="64"
-              />
-            </svg>
-            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-white">
-              {progress}%
-            </span>
+      <CardContent className="flex-1">
+        <div className="h-[300px] flex flex-col justify-between">
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="flex justify-center items-center mb-4">
+              <div className="relative">
+                <svg className="w-32 h-32">
+                  <circle
+                    className="text-zinc-800"
+                    strokeWidth="8"
+                    stroke="currentColor"
+                    fill="transparent"
+                    r="58"
+                    cx="64"
+                    cy="64"
+                  />
+                  <circle
+                    className="text-zinc-800"
+                    strokeWidth="8"
+                    strokeDasharray={58 * 2 * Math.PI}
+                    strokeDashoffset={58 * 2 * Math.PI * (1 - progress / 100)}
+                    strokeLinecap="round"
+                    stroke="currentColor"
+                    fill="transparent"
+                    r="58"
+                    cx="64"
+                    cy="64"
+                  />
+                </svg>
+                <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold text-white">
+                  {progress}%
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm text-[#B0B0B0]">
-            <span>Emergency Kit</span>
-            <span>80%</span>
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm text-zinc-400">
+              <span>Emergency Kit</span>
+              <span>80%</span>
+            </div>
+            <Progress value={80} className="bg-zinc-800" />
+            <div className="flex justify-between text-sm text-zinc-400">
+              <span>Communication Plan</span>
+              <span>60%</span>
+            </div>
+            <Progress value={60} className="bg-zinc-800" />
+            <div className="flex justify-between text-sm text-zinc-400">
+              <span>Local Information</span>
+              <span>90%</span>
+            </div>
+            <Progress value={90} className="bg-zinc-800" />
           </div>
-          <Progress value={80} className="bg-[#2E2E2E]" />
-          <div className="flex justify-between text-sm text-[#B0B0B0]">
-            <span>Communication Plan</span>
-            <span>60%</span>
-          </div>
-          <Progress value={60} className="bg-[#2E2E2E]" />
-          <div className="flex justify-between text-sm text-[#B0B0B0]">
-            <span>Local Information</span>
-            <span>90%</span>
-          </div>
-          <Progress value={90} className="bg-[#2E2E2E]" />
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" className="bg-[#2E2E2E] text-[#FF5722] border border-[#FF5722] hover:bg-[#3E3E3E]">
+      <CardFooter className="mt-auto flex justify-between">
+        <Button variant="outline" className="bg-zinc-800 text-white hover:bg-zinc-700">
           <Download className="mr-2 h-4 w-4" />
           Export Plan
         </Button>
-        <Button className="bg-[#FF5722] text-white hover:bg-[#FF7043]">
+        <Button className="bg-zinc-800 text-white hover:bg-zinc-700">
           <Share2 className="mr-2 h-4 w-4" />
           Share Plan
         </Button>
@@ -337,37 +351,36 @@ const PlanStatusOverview = () => {
 // Main Component
 export function PreparednessPlannerComponent() {
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <Card className="w-full max-w-6xl mx-auto bg-[#1E1E1E] border-[#2E2E2E]">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle className="text-2xl text-white">CrisisCore Preparedness Planner</CardTitle>
-            <CardDescription className="text-[#B0B0B0]">Stay prepared, stay safe</CardDescription>
-          </div>
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback className="bg-[#2E2E2E] text-[#FF5722]">CN</AvatarFallback>
-          </Avatar>
-        </CardHeader>
-        <CardContent>
+    <div className="flex min-h-screen bg-zinc-950 text-white">
+      <div className="flex-grow overflow-y-auto p-4 md:p-6 lg:p-8">
+        <div className="space-y-6 max-w-4xl mx-auto">
+          {/* Grid layout for the main content */}
           <div className="grid gap-6 md:grid-cols-2">
+            {/* Checklist Plans */}
             <div className="flex flex-col">
               <ChecklistPlans />
             </div>
+
+            {/* Emergency Kit Checklist */}
             <div className="flex flex-col">
               <EmergencyKitChecklist />
             </div>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 mt-6">
+
+          {/* Second row */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Local Preparedness Info */}
             <div className="flex flex-col">
               <LocalPreparednessInfo />
             </div>
+
+            {/* Plan Status Overview */}
             <div className="flex flex-col">
               <PlanStatusOverview />
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }
