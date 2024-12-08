@@ -117,7 +117,6 @@ export const SidebarBody = ({
 
 export const SidebarLink = ({
   href,
-  icon,
   children,
   active,
   className,
@@ -125,7 +124,6 @@ export const SidebarLink = ({
   ...props
 }: {
   href: string;
-  icon?: React.ReactNode;
   children: React.ReactNode;
   active?: boolean;
   className?: string;
@@ -146,28 +144,32 @@ export const SidebarLink = ({
       )}
       {...props}
     >
-      <div style={{ width: '28px', height: '28px', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {React.cloneElement(icon as React.ReactElement, {
-          style: { width: '28px', height: '28px' },
-          className: 'flex-shrink-0'
-        })}
-      </div>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.span
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{
-              duration: 0.2,
-              ease: "easeInOut"
-            }}
-            style={{ fontSize: '16px', whiteSpace: 'nowrap' }}
-          >
-            {children}
-          </motion.span>
-        )}
-      </AnimatePresence>
+      {React.Children.map(children, (child, index) => {
+        if (index === 0) {
+          return (
+            <span className="w-7 h-7 flex items-center justify-center flex-shrink-0">
+              {child}
+            </span>
+          );
+        }
+        if (open && index === 1) {
+          return (
+            <motion.span
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{
+                duration: 0.2,
+                ease: "easeInOut"
+              }}
+              style={{ fontSize: '16px', whiteSpace: 'nowrap' }}
+            >
+              {child}
+            </motion.span>
+          );
+        }
+        return null;
+      })}
     </Link>
   );
 };
