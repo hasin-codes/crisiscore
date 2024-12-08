@@ -32,10 +32,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider>
-      <LocationProvider>
-        <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-          <body className="bg-zinc-950">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="bg-zinc-950">
+        <ClerkProvider>
+          <LocationProvider>
             <div className="flex min-h-screen">
               <SidebarDemo />
               <MainContent>
@@ -43,9 +43,9 @@ export default function RootLayout({
               </MainContent>
             </div>
             <Toaster />
-          </body>
-        </html>
-      </LocationProvider>
-    </ClerkProvider>
+          </LocationProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   )
 }

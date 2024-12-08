@@ -10,7 +10,12 @@ interface LocationContextType {
   loading: boolean
 }
 
-const LocationContext = createContext<LocationContextType | undefined>(undefined)
+const LocationContext = createContext<LocationContextType>({
+  latitude: null,
+  longitude: null,
+  error: null,
+  loading: true,
+})
 
 export function LocationProvider({ children }: { children: ReactNode }) {
   const location = useGeolocation()
@@ -24,8 +29,13 @@ export function LocationProvider({ children }: { children: ReactNode }) {
 
 export function useLocation() {
   const context = useContext(LocationContext)
-  if (context === undefined) {
-    throw new Error('useLocation must be used within a LocationProvider')
+  if (!context) {
+    return {
+      latitude: null,
+      longitude: null,
+      error: 'Location context not available',
+      loading: false,
+    }
   }
   return context
 } 
