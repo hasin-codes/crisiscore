@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
+import { Container } from '@/components/ui/container'
 
 // Add TypeScript interfaces
 interface Task {
@@ -350,7 +351,7 @@ const PlanStatusOverview = () => {
 export function PreparednessPlannerComponent() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
-      <div className="container mx-auto p-4 md:p-6 lg:p-8">
+      <Container>
         <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
           {/* 1. AI-Powered Checklist Plan */}
           <div>
@@ -372,7 +373,7 @@ export function PreparednessPlannerComponent() {
             <PlanStatusOverview />
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   )
 }

@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DynamicWindyMap } from '@/components/ui/dynamic-windy-map'
 import ClientOnly from '@/components/ui/client-only'
+import { Container } from '@/components/ui/container'
 
 // Color palette export
 export const colorPalette = {
@@ -92,9 +93,9 @@ export function AlertsPageComponent() {
 
   return (
     <ClientOnly>
-      <div className="flex min-h-screen bg-zinc-950 text-white">
-        <div className="flex-grow overflow-y-auto p-4 md:p-6 lg:p-8">
-          <div className="space-y-6 max-w-4xl mx-auto">
+      <div className="min-h-screen bg-zinc-950 text-white">
+        <Container>
+          <div className="space-y-6">
             {/* AI Briefing Section */}
             <AlertCard
               title="AI Briefing"
@@ -264,7 +265,7 @@ export function AlertsPageComponent() {
               </CardFooter>
             </Card>
           </div>
-        </div>
+        </Container>
       </div>
     </ClientOnly>
   )

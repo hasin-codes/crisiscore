@@ -21,6 +21,7 @@ import Script from 'next/script'
 import { cn } from "@/lib/utils"
 import { Spotlight } from "@/components/ui/spotlight"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Container } from '@/components/ui/container'
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -905,21 +906,23 @@ FancyInput.displayName = "FancyInput";
 export function EmergencyPageComponent() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
-      <div className="grid gap-8">
-        <motion.div variants={cardVariants} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-8">
-          <MissingPersonsRegistry />
-          <EmergencyServiceStatus />
-        </motion.div>
+      <Container>
+        <div className="grid gap-8">
+          <motion.div variants={cardVariants} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-8">
+            <MissingPersonsRegistry />
+            <EmergencyServiceStatus />
+          </motion.div>
 
-        <motion.div variants={cardVariants} initial="hidden" animate="visible" transition={{ delay: 0.2 }} className="grid md:grid-cols-2 gap-8">
-          <EmergencyShelterHub />
-          <EmergencyCommandCenter />
-        </motion.div>
+          <motion.div variants={cardVariants} initial="hidden" animate="visible" transition={{ delay: 0.2 }} className="grid md:grid-cols-2 gap-8">
+            <EmergencyShelterHub />
+            <EmergencyCommandCenter />
+          </motion.div>
 
-        <motion.div variants={cardVariants} initial="hidden" animate="visible" transition={{ delay: 0.4 }}>
-          <CommunitySupportNetwork />
-        </motion.div>
-      </div>
+          <motion.div variants={cardVariants} initial="hidden" animate="visible" transition={{ delay: 0.4 }}>
+            <CommunitySupportNetwork />
+          </motion.div>
+        </div>
+      </Container>
     </div>
   )
 }
