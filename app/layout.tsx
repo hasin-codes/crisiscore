@@ -7,6 +7,8 @@ import { SidebarDemo } from "@/components/sidebar";
 import { MainContent } from "@/components/ui/main-content";
 import { ClerkProvider } from '@clerk/nextjs'
 import { LocationProvider } from '@/contexts/location-context'
+import BottomNav from "@/components/bottom-nav";
+import ClientWrapper from "@/components/ui/client-wrapper"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body className="bg-zinc-950">
         <ClerkProvider>
           <LocationProvider>
@@ -41,6 +43,9 @@ export default function RootLayout({
               <MainContent>
                 {children}
               </MainContent>
+              <ClientWrapper>
+                <BottomNav />
+              </ClientWrapper>
             </div>
             <Toaster />
           </LocationProvider>
