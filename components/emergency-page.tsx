@@ -59,13 +59,9 @@ const handleFormSubmit = (formName: string) => (e: React.FormEvent) => {
 }
 
 const MissingPersonsRegistry = () => (
-  <Card className="bg-zinc-900 text-white border-zinc-800 h-full relative overflow-hidden">
-    <Spotlight
-      className="-top-40 left-0"
-      fill="white"
-    />
+  <>
     <CardHeader>
-      <CardTitle className="text-lg font-bold flex items-center">
+      <CardTitle className="text-lg font-bold flex items-center text-white">
         <Users className="mr-2 h-5 w-5 text-red-500" />
         Missing Persons Registry
       </CardTitle>
@@ -79,7 +75,7 @@ const MissingPersonsRegistry = () => (
             <Search className="h-4 w-4" />
           </Button>
         </div>
-        <ScrollArea className="h-[200px] w-full rounded-md border border-zinc-800">
+        <ScrollArea className="h-[200px] w-full rounded-md border border-zinc-800 bg-black/40">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="flex items-center space-x-4 p-4 border-b border-zinc-800 last:border-b-0">
               <Avatar className="h-10 w-10">
@@ -197,13 +193,13 @@ const MissingPersonsRegistry = () => (
         </form>
       </FormDialog>
     </CardFooter>
-  </Card>
+  </>
 )
 
 const EmergencyServiceStatus = () => (
-  <Card className="bg-zinc-900 text-white border-zinc-800 h-full">
+  <>
     <CardHeader>
-      <CardTitle className="text-lg font-bold flex items-center">
+      <CardTitle className="text-lg font-bold flex items-center text-white">
         <Siren className="mr-2 h-5 w-5 text-yellow-500" />
         Emergency Service Status
       </CardTitle>
@@ -270,13 +266,13 @@ const EmergencyServiceStatus = () => (
         </form>
       </FormDialog>
     </CardFooter>
-  </Card>
+  </>
 )
 
 const EmergencyShelterHub = () => (
-  <Card className="bg-zinc-900 text-white border-zinc-800 h-full">
+  <>
     <CardHeader>
-      <CardTitle className="text-lg font-bold flex items-center">
+      <CardTitle className="text-lg font-bold flex items-center text-white">
         <Tent className="mr-2 h-5 w-5 text-blue-500" />
         Emergency Shelter Hub
       </CardTitle>
@@ -323,13 +319,13 @@ const EmergencyShelterHub = () => (
         Find Nearest Shelter
       </Button>
     </CardFooter>
-  </Card>
+  </>
 )
 
 const EmergencyCommandCenter = () => (
-  <Card className="bg-zinc-900 text-white border-zinc-800 h-full">
+  <>
     <CardHeader>
-      <CardTitle className="text-lg font-bold flex items-center">
+      <CardTitle className="text-lg font-bold flex items-center text-white">
         <AlertCircle className="mr-2 h-5 w-5 text-orange-500" />
         Emergency Command Center
       </CardTitle>
@@ -366,7 +362,7 @@ const EmergencyCommandCenter = () => (
         ))}
       </div>
     </CardContent>
-  </Card>
+  </>
 )
 
 type Step = {
@@ -703,9 +699,9 @@ const CommunitySupportNetwork = () => {
   ]
 
   return (
-    <Card className="bg-zinc-900 text-white border-zinc-800">
+    <>
       <CardHeader>
-        <CardTitle className="text-lg font-bold flex items-center">
+        <CardTitle className="text-lg font-bold flex items-center text-white">
           <Users className="mr-2 h-5 w-5 text-green-500" />
           Community Support Network
         </CardTitle>
@@ -846,7 +842,7 @@ const CommunitySupportNetwork = () => {
           </TabsContent>
         </Tabs>
       </CardContent>
-    </Card>
+    </>
   )
 }
 
@@ -903,25 +899,55 @@ const FancyInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<
 );
 FancyInput.displayName = "FancyInput";
 
+const CardWrapper = ({ children }: { children: React.ReactNode }) => (
+  <div className="h-full">
+    {children}
+  </div>
+)
+
 export function EmergencyPageComponent() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen pb-16 bg-zinc-950 text-white">
       <Container>
-        <div className="grid gap-8">
-          <motion.div variants={cardVariants} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-8">
-            <MissingPersonsRegistry />
-            <EmergencyServiceStatus />
+        <main className="space-y-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          >
+            <Card className="bg-zinc-900 border-zinc-800">
+              <MissingPersonsRegistry />
+            </Card>
+            <Card className="bg-zinc-900 border-zinc-800">
+              <EmergencyServiceStatus />
+            </Card>
           </motion.div>
 
-          <motion.div variants={cardVariants} initial="hidden" animate="visible" transition={{ delay: 0.2 }} className="grid md:grid-cols-2 gap-8">
-            <EmergencyShelterHub />
-            <EmergencyCommandCenter />
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          >
+            <Card className="bg-zinc-900 border-zinc-800">
+              <EmergencyShelterHub />
+            </Card>
+            <Card className="bg-zinc-900 border-zinc-800">
+              <EmergencyCommandCenter />
+            </Card>
           </motion.div>
 
-          <motion.div variants={cardVariants} initial="hidden" animate="visible" transition={{ delay: 0.4 }}>
-            <CommunitySupportNetwork />
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <Card className="bg-zinc-900 border-zinc-800">
+              <CommunitySupportNetwork />
+            </Card>
           </motion.div>
-        </div>
+        </main>
       </Container>
     </div>
   )
