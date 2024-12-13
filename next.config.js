@@ -23,6 +23,20 @@ const nextConfig = {
       },
     ]
   },
+  experimental: {
+    optimizeFonts: true,
+  },
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
+  webpack: (config, { isServer }) => {
+    config.infrastructureLogging = {
+      level: 'error',
+    }
+    
+    return config
+  },
 }
 
 module.exports = nextConfig 

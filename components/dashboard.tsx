@@ -14,6 +14,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useEffect, useState } from 'react'
 import { DynamicWindyMap } from '@/components/ui/dynamic-windy-map'
+import ClientOnly from '@/components/ui/client-only'
 
 interface AlertCardProps {
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -135,26 +136,46 @@ const WeatherSection = () => {
   }
 
   return (
-    <section className="grid grid-cols-3 gap-2 sm:gap-4 mb-8">
-      <StatCard 
-        Icon={Thermometer} 
-        title="Temperature" 
-        value={weatherData.temperature.value} 
-        unit={weatherData.temperature.unit} 
-      />
-      <StatCard 
-        Icon={Droplets} 
-        title="Precipitation" 
-        value={weatherData.precipitation.value} 
-        unit={weatherData.precipitation.unit} 
-      />
-      <StatCard 
-        Icon={Wind} 
-        title="Wind Speed" 
-        value={weatherData.windSpeed.value} 
-        unit={weatherData.windSpeed.unit} 
-      />
-    </section>
+    <ClientOnly>
+      <Card className="bg-zinc-900 border-zinc-800 mb-4 mx-2 sm:mx-4">
+        <CardContent className="p-3 sm:p-4">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4">
+            <Card className="bg-black/40 border-zinc-800/50 min-h-[80px] sm:min-h-[100px]">
+              <CardContent className="flex flex-col items-center justify-center h-full p-2 sm:p-4">
+                <p className="text-lg sm:text-2xl md:text-3xl font-medium text-white truncate">
+                  {weatherData.temperature.value}{weatherData.temperature.unit}
+                </p>
+                <p className="text-xs sm:text-sm text-zinc-400 mt-0.5 sm:mt-1 truncate">
+                  Temperature
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-black/40 border-zinc-800/50 min-h-[80px] sm:min-h-[100px]">
+              <CardContent className="flex flex-col items-center justify-center h-full p-2 sm:p-4">
+                <p className="text-lg sm:text-2xl md:text-3xl font-medium text-white truncate">
+                  {weatherData.precipitation.value}{weatherData.precipitation.unit}
+                </p>
+                <p className="text-xs sm:text-sm text-zinc-400 mt-0.5 sm:mt-1 truncate">
+                  Precipitation
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-black/40 border-zinc-800/50 min-h-[80px] sm:min-h-[100px]">
+              <CardContent className="flex flex-col items-center justify-center h-full p-2 sm:p-4">
+                <p className="text-lg sm:text-2xl md:text-3xl font-medium text-white truncate">
+                  {weatherData.windSpeed.value}{weatherData.windSpeed.unit}
+                </p>
+                <p className="text-xs sm:text-sm text-zinc-400 mt-0.5 sm:mt-1 truncate">
+                  Wind Speed
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </CardContent>
+      </Card>
+    </ClientOnly>
   )
 }
 
@@ -296,6 +317,19 @@ const getIconComponent = (iconName: string) => {
   return icons[iconName as keyof typeof icons]
 }
 
+const DynamicComponent = () => {
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    // Put browser-specific code here
+    // This will only run on the client
+  }, [])
+
+  if (!data) return null
+
+  return <div>{/* component content */}</div>
+}
+
 export function DashboardComponent() {
   const [isClient, setIsClient] = useState(false)
 
@@ -304,28 +338,9 @@ export function DashboardComponent() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white p-4 md:p-8 lg:pl-4">
+    <div className="min-h-screen bg-zinc-950 text-white">
       {isClient ? (
         <>
-          <header className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold">CrisisCore Dashboard</h1>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-white hover:bg-zinc-800">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder-avatar.jpg" alt="User" />
-                      <AvatarFallback><User className="h-5 w-5" /></AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>User Profile</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </header>
-
           <main className="space-y-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

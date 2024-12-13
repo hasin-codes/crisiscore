@@ -91,191 +91,181 @@ export function AlertsPageComponent() {
   const [isSafetyTipsExpanded, setIsSafetyTipsExpanded] = useState(false)
 
   return (
-    <div className="flex min-h-screen bg-zinc-950 text-white">
-      <div className="flex-grow overflow-y-auto p-4 md:p-6 lg:p-8">
-        <div className="space-y-6 max-w-4xl mx-auto">
-          {/* AI Briefing Section */}
-          <AlertCard
-            title="AI Briefing"
-            mainContent={
-              <div>
-                <p className="text-sm text-zinc-400 mb-2">Last updated: 5 minutes ago</p>
-                <p>Current situation: Moderate risk of flash floods in the southern region.</p>
-              </div>
-            }
-            expandedContent={
-              <div>
-                <Separator className="my-4 bg-zinc-800" />
-                <p className="mb-2">Extended forecast indicates a 60% chance of heavy rainfall over the next 48 hours, potentially leading to localized flooding in low-lying areas.</p>
-                <p>Residents are advised to stay informed and prepare for possible evacuation notices.</p>
-              </div>
-            }
-            isExpanded={isAIBriefingExpanded}
-            setIsExpanded={setIsAIBriefingExpanded}
-          />
-
-          {/* Situation Overview */}
-          <Card className="bg-zinc-900 border-zinc-800 text-white">
-            <CardHeader>
-              <CardTitle className="text-lg font-bold">Situation Overview</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Impact Zone */}
-              <div>
-                <h3 className="font-semibold mb-2">Impact Zone</h3>
-                <div className="aspect-video">
-                  <DynamicWindyMap />
+    <ClientOnly>
+      <div className="flex min-h-screen bg-zinc-950 text-white">
+        <div className="flex-grow overflow-y-auto p-4 md:p-6 lg:p-8">
+          <div className="space-y-6 max-w-4xl mx-auto">
+            {/* AI Briefing Section */}
+            <AlertCard
+              title="AI Briefing"
+              mainContent={
+                <div>
+                  <p className="text-sm text-zinc-400 mb-2">Last updated: 5 minutes ago</p>
+                  <p>Current situation: Moderate risk of flash floods in the southern region.</p>
                 </div>
-              </div>
-
-              {/* Severity */}
-              <div>
-                <h3 className="font-semibold mb-2">Severity</h3>
-                <div className="flex justify-between items-center mb-2">
-                  <span>Current Risk Level</span>
-                  <Badge variant="destructive">Moderate</Badge>
+              }
+              expandedContent={
+                <div>
+                  <Separator className="my-4 bg-zinc-800" />
+                  <p className="mb-2">Extended forecast indicates a 60% chance of heavy rainfall over the next 48 hours, potentially leading to localized flooding in low-lying areas.</p>
+                  <p>Residents are advised to stay informed and prepare for possible evacuation notices.</p>
                 </div>
-                <Progress value={60} className="w-full bg-zinc-800" />
-                <p className="text-sm text-zinc-400 mt-2">Risk level is based on current weather patterns and historical data.</p>
-              </div>
+              }
+              isExpanded={isAIBriefingExpanded}
+              setIsExpanded={setIsAIBriefingExpanded}
+            />
 
-              {/* Timeline */}
-              <div>
-                <h3 className="font-semibold mb-2">Timeline</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span>Alert Issued</span>
-                    <span className="text-zinc-400">2 hours ago</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Expected Peak</span>
-                    <span className="text-zinc-400">In 6 hours</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Estimated Duration</span>
-                    <span className="text-zinc-400">12-18 hours</span>
+            {/* Situation Overview */}
+            <Card className="bg-zinc-900 border-zinc-800 text-white">
+              <CardHeader>
+                <CardTitle className="text-lg font-bold">Situation Overview</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Impact Zone */}
+                <div>
+                  <h3 className="font-semibold mb-2">Impact Zone</h3>
+                  <div className="aspect-video">
+                    <DynamicWindyMap />
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Safety Tips Module */}
-          <AlertCard
-            title="Safety Tips"
-            mainContent={
-              <div>
-                <h3 className="font-semibold text-blue-400">Key Safety Tip</h3>
-                <p className="text-sm text-zinc-300">Stay informed and be prepared to evacuate if necessary.</p>
-              </div>
-            }
-            expandedContent={
-              <div className="space-y-4 mt-4">
+                {/* Severity */}
                 <div>
-                  <h3 className="font-semibold text-blue-400">Prepare an Emergency Kit</h3>
-                  <ul className="list-disc list-inside text-sm text-zinc-300">
-                    <li>Water (one gallon per person per day for at least three days)</li>
-                    <li>Non-perishable food (at least a three-day supply)</li>
-                    <li>Battery-powered or hand crank radio</li>
-                    <li>Flashlight and extra batteries</li>
-                    <li>First aid kit</li>
-                    <li>Whistle to signal for help</li>
-                  </ul>
+                  <h3 className="font-semibold mb-2">Severity</h3>
+                  <div className="flex justify-between items-center mb-2">
+                    <span>Current Risk Level</span>
+                    <Badge variant="destructive">Moderate</Badge>
+                  </div>
+                  <Progress value={60} className="w-full bg-zinc-800" />
+                  <p className="text-sm text-zinc-400 mt-2">Risk level is based on current weather patterns and historical data.</p>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-blue-400">During a Flood</h3>
-                  <ul className="list-disc list-inside text-sm text-zinc-300">
-                    <li>Stay informed: Monitor local news and weather reports</li>
-                    <li>Move to higher ground if there is a risk of flash flooding</li>
-                    <li>Do not walk, swim, or drive through flood waters</li>
-                    <li>Stay off bridges over fast-moving water</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-blue-400">After a Flood</h3>
-                  <ul className="list-disc list-inside text-sm text-zinc-300">
-                    <li>Return home only when authorities say it is safe</li>
-                    <li>Avoid standing water as it may be electrically charged</li>
-                    <li>Be aware of areas where floodwaters have receded and watch out for debris</li>
-                    <li>Do not use appliances or electronics exposed to water until checked for safety</li>
-                  </ul>
-                </div>
-              </div>
-            }
-            isExpanded={isSafetyTipsExpanded}
-            setIsExpanded={setIsSafetyTipsExpanded}
-          />
 
-          {/* Predictions Panel */}
-          <AlertCard
-            title="Predictions"
-            mainContent={
-              <div>
-                <div className="flex justify-between items-center">
-                  <span>Flood Risk (Next 24h)</span>
-                  <Badge variant="destructive">High</Badge>
-                </div>
-                <Progress value={80} className="w-full bg-zinc-800 mt-2" />
-              </div>
-            }
-            expandedContent={
-              <div className="space-y-4 mt-4">
-                <p className="text-sm text-zinc-400">AI models predict an 80% chance of significant flooding in the next 24 hours based on current weather patterns and historical data.</p>
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-blue-400">Potential Impacts:</h4>
-                  <ul className="list-disc list-inside text-sm text-zinc-300">
-                    <li>Road closures in low-lying areas</li>
-                    <li>Possible power outages</li>
-                    <li>Evacuation of flood-prone neighborhoods</li>
-                  </ul>
-                </div>
-                <Button variant="outline" className="w-full bg-zinc-800 text-white hover:bg-zinc-700">
-                  <Share2 className="mr-2 h-4 w-4" />
-                  Share Prediction Report
-                </Button>
-              </div>
-            }
-            isExpanded={isPredictionsPanelExpanded}
-            setIsExpanded={setIsPredictionsPanelExpanded}
-          />
-
-          {/* Update Timeline */}
-          <Card className="bg-zinc-900 border-zinc-800 text-white">
-            <CardHeader>
-              <CardTitle className="text-lg font-bold">Recent Updates</CardTitle>
-              <CardDescription>
-                <div className="flex items-center space-x-2">
-                  <Input type="text" placeholder="Search updates" className="bg-zinc-800 text-white border-zinc-700" />
-                  <Button variant="outline" size="icon" className="bg-zinc-800 text-white hover:bg-zinc-700">
-                    <Search className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" className="bg-zinc-800 text-white hover:bg-zinc-700">
-                    <Filter className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-[300px]">
-                <div className="space-y-4">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="border-l-2 border-blue-500 pl-4 pb-4">
-                      <h3 className="font-semibold text-blue-400">Update {5 - i}</h3>
-                      <p className="text-sm text-zinc-400">
-                        {i === 0 ? '5 minutes ago' : `${i * 30} minutes ago`}
-                      </p>
-                      <p className="mt-1 text-zinc-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                {/* Timeline */}
+                <div>
+                  <h3 className="font-semibold mb-2">Timeline</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Alert Issued</span>
+                      <span className="text-zinc-400">2 hours ago</span>
                     </div>
-                  ))}
+                    <div className="flex justify-between">
+                      <span>Expected Peak</span>
+                      <span className="text-zinc-400">In 6 hours</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Estimated Duration</span>
+                      <span className="text-zinc-400">12-18 hours</span>
+                    </div>
+                  </div>
                 </div>
-              </ScrollArea>
-            </CardContent>
-            <CardFooter>
-              <Button variant="outline" className="w-full bg-zinc-800 text-white hover:bg-zinc-700">Load More</Button>
-            </CardFooter>
-          </Card>
+              </CardContent>
+            </Card>
+
+            {/* Safety Tips Module */}
+            <AlertCard
+              title="Safety Tips"
+              mainContent={
+                <div>
+                  <h3 className="font-semibold text-blue-400">Key Safety Tip</h3>
+                  <p className="text-sm text-zinc-300">Stay informed and be prepared to evacuate if necessary.</p>
+                </div>
+              }
+              expandedContent={
+                <div className="space-y-4 mt-4">
+                  <div>
+                    <h3 className="font-semibold text-blue-400">Prepare an Emergency Kit</h3>
+                    <ul className="list-disc list-inside text-sm text-zinc-300">
+                      <li>Water (one gallon per person per day for at least three days)</li>
+                      <li>Non-perishable food (at least a three-day supply)</li>
+                      <li>Battery-powered or hand crank radio</li>
+                      <li>Flashlight and extra batteries</li>
+                      <li>First aid kit</li>
+                      <li>Whistle to signal for help</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-blue-400">During a Flood</h3>
+                    <ul className="list-disc list-inside text-sm text-zinc-300">
+                      <li>Stay informed: Monitor local news and weather reports</li>
+                      <li>Move to higher ground if there is a risk of flash flooding</li>
+                      <li>Do not walk, swim, or drive through flood waters</li>
+                      <li>Stay off bridges over fast-moving water</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-blue-400">After a Flood</h3>
+                    <ul className="list-disc list-inside text-sm text-zinc-300">
+                      <li>Return home only when authorities say it is safe</li>
+                      <li>Avoid standing water as it may be electrically charged</li>
+                      <li>Be aware of areas where floodwaters have receded and watch out for debris</li>
+                      <li>Do not use appliances or electronics exposed to water until checked for safety</li>
+                    </ul>
+                  </div>
+                </div>
+              }
+              isExpanded={isSafetyTipsExpanded}
+              setIsExpanded={setIsSafetyTipsExpanded}
+            />
+
+            {/* Predictions Panel */}
+            <AlertCard
+              title="Predictions"
+              mainContent={
+                <div>
+                  <div className="flex justify-between items-center">
+                    <span>Flood Risk (Next 24h)</span>
+                    <Badge variant="destructive">High</Badge>
+                  </div>
+                  <Progress value={80} className="w-full bg-zinc-800 mt-2" />
+                </div>
+              }
+              expandedContent={
+                <div className="space-y-4 mt-4">
+                  {/* ... rest of predictions content ... */}
+                </div>
+              }
+              isExpanded={isPredictionsPanelExpanded}
+              setIsExpanded={setIsPredictionsPanelExpanded}
+            />
+
+            {/* Update Timeline */}
+            <Card className="bg-zinc-900 border-zinc-800 text-white">
+              <CardHeader>
+                <CardTitle className="text-lg font-bold">Recent Updates</CardTitle>
+                <CardDescription>
+                  <div className="flex items-center space-x-2">
+                    <Input type="text" placeholder="Search updates" className="bg-zinc-800 text-white border-zinc-700" />
+                    <Button variant="outline" size="icon" className="bg-zinc-800 text-white hover:bg-zinc-700">
+                      <Search className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="icon" className="bg-zinc-800 text-white hover:bg-zinc-700">
+                      <Filter className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[300px]">
+                  <div className="space-y-4">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="border-l-2 border-blue-500 pl-4 pb-4">
+                        <h3 className="font-semibold text-blue-400">Update {5 - i}</h3>
+                        <p className="text-sm text-zinc-400">
+                          {i === 0 ? '5 minutes ago' : `${i * 30} minutes ago`}
+                        </p>
+                        <p className="mt-1 text-zinc-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" className="w-full bg-zinc-800 text-white hover:bg-zinc-700">Load More</Button>
+              </CardFooter>
+            </Card>
+          </div>
         </div>
       </div>
-    </div>
+    </ClientOnly>
   )
 }

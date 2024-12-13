@@ -102,3 +102,9 @@
   background: transparent;
   border: none;
 }
+
+/* Add these at the top of your globals.css */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}

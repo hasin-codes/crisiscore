@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster"
-import Script from 'next/script'
 import { SidebarDemo } from "@/components/sidebar";
 import { MainContent } from "@/components/ui/main-content";
 import { ClerkProvider } from '@clerk/nextjs'
 import { LocationProvider } from '@/contexts/location-context'
 import BottomNav from "@/components/bottom-nav";
 import ClientWrapper from "@/components/ui/client-wrapper"
+import { RoutePrefetcher } from '@/components/route-prefetcher'
+import ErrorBoundary from "@/components/error-boundary"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,6 +17,7 @@ const geistSans = localFont({
   weight: "100 900",
   display: 'swap',
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -34,8 +36,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
-      <body className="bg-zinc-950">
+    <html 
+      lang="en" 
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <body 
+        className="bg-zinc-950"
+        suppressHydrationWarning
+      >
+        <ErrorBoundary>
         <ClerkProvider>
           <LocationProvider>
             <div className="flex min-h-screen">
@@ -48,8 +58,12 @@ export default function RootLayout({
               </ClientWrapper>
             </div>
             <Toaster />
+            <ClientWrapper>
+              <RoutePrefetcher />
+            </ClientWrapper>
           </LocationProvider>
         </ClerkProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )

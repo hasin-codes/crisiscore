@@ -904,15 +904,7 @@ FancyInput.displayName = "FancyInput";
 
 export function EmergencyPageComponent() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white p-4 md:p-8">
-      <header className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Emergency Center</h1>
-        <Avatar className="h-10 w-10">
-          <AvatarImage src="/placeholder-avatar.jpg" alt="User" />
-          <AvatarFallback><User className="h-6 w-6" /></AvatarFallback>
-        </Avatar>
-      </header>
-
+    <div className="min-h-screen bg-zinc-950 text-white">
       <div className="grid gap-8">
         <motion.div variants={cardVariants} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-8">
           <MissingPersonsRegistry />
@@ -928,14 +920,6 @@ export function EmergencyPageComponent() {
           <CommunitySupportNetwork />
         </motion.div>
       </div>
-
-      <Script
-        src="https://api.windy.com/assets/map-forecast/libBoot.js"
-        strategy="beforeInteractive"
-        onError={(e) => {
-          console.error('Error loading Windy script:', e);
-        }}
-      />
     </div>
   )
 }

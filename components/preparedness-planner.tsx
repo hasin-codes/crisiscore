@@ -351,35 +351,9 @@ const PlanStatusOverview = () => {
 // Main Component
 export function PreparednessPlannerComponent() {
   return (
-    <div className="flex min-h-screen bg-zinc-950 text-white">
-      <div className="flex-grow overflow-y-auto p-4 md:p-6 lg:p-8">
-        <div className="space-y-6 max-w-4xl mx-auto">
-          {/* Grid layout for the main content */}
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Checklist Plans */}
-            <div className="flex flex-col">
-              <ChecklistPlans />
-            </div>
-
-            {/* Emergency Kit Checklist */}
-            <div className="flex flex-col">
-              <EmergencyKitChecklist />
-            </div>
-          </div>
-
-          {/* Second row */}
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Local Preparedness Info */}
-            <div className="flex flex-col">
-              <LocalPreparednessInfo />
-            </div>
-
-            {/* Plan Status Overview */}
-            <div className="flex flex-col">
-              <PlanStatusOverview />
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-zinc-950 text-white">
+      <div className="grid gap-8">
+        {/* Your planner content */}
       </div>
     </div>
   )
