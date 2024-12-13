@@ -1,18 +1,16 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { AlertCircle, Bell, CheckCircle2, ChevronRight, Clock, Download, Map, MessageCircle, Plus, Share2, User } from 'lucide-react'
+import { Download, Map, Plus, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-// Add this interface near the top of the file
+// Add TypeScript interfaces
 interface Task {
   id: number;
   text: string;
@@ -56,7 +54,7 @@ const ChecklistPlans = () => {
       const updatedTasks = prevTasks.map(task => 
         task.id === id ? { ...task, completed: !task.completed } : task
       )
-      return updatedTasks.sort((a, b) => {
+      return updatedTasks.sort((a: Task, b: Task) => {
         if (a.completed === b.completed) return 0
         return a.completed ? 1 : -1
       })
@@ -352,8 +350,28 @@ const PlanStatusOverview = () => {
 export function PreparednessPlannerComponent() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
-      <div className="grid gap-8">
-        {/* Your planner content */}
+      <div className="container mx-auto p-4 md:p-6 lg:p-8">
+        <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
+          {/* 1. AI-Powered Checklist Plan */}
+          <div>
+            <ChecklistPlans />
+          </div>
+
+          {/* 2. Emergency Kit Checklist */}
+          <div>
+            <EmergencyKitChecklist />
+          </div>
+
+          {/* 3. Local Preparedness Information */}
+          <div className="col-span-1 md:col-span-2">
+            <LocalPreparednessInfo />
+          </div>
+
+          {/* 4. Plan Status Overview */}
+          <div className="col-span-1 md:col-span-2">
+            <PlanStatusOverview />
+          </div>
+        </div>
       </div>
     </div>
   )
