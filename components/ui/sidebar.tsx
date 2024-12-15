@@ -42,7 +42,7 @@ export const Sidebar = ({
     <SidebarContext.Provider value={{ open, setOpen, animate: true }}>
       <motion.div
         className={cn(
-          "fixed top-0 left-0 h-screen bg-zinc-900 shrink-0 overflow-hidden",
+          "fixed left-0 h-[calc(100vh-calc(2vh+56px))] bg-zinc-900 shrink-0 overflow-hidden",
           "hidden md:block",
           className
         )}

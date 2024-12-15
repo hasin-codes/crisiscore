@@ -12,7 +12,10 @@ export function MainContent({
 }) {
   return (
     <motion.main 
-      className={cn("flex-1 p-6 overflow-x-hidden", className)}
+      className={cn(
+        "flex-1 p-6 overflow-x-hidden relative",
+        className
+      )}
       layout
       transition={{
         duration: 0.2,

@@ -21,8 +21,7 @@ export function SidebarDemo() {
   const { openSignIn } = useClerk();
 
   return (
-    <Sidebar>
-      {/* Main Navigation - will expand to fill space */}
+    <Sidebar className="top-[calc(2vh+56px)]">
       <SidebarBody>
         <nav className="flex-1 flex flex-col gap-1">
           <SidebarLink
@@ -65,7 +64,6 @@ export function SidebarDemo() {
           </SidebarLink>
         </nav>
 
-        {/* User Profile - Fixed at bottom */}
         <div className="border-t border-zinc-800 mt-auto pt-4">
           {isLoaded && (
             user ? (

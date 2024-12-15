@@ -10,6 +10,9 @@ import BottomNav from "@/components/bottom-nav";
 import ClientWrapper from "@/components/ui/client-wrapper"
 import { RoutePrefetcher } from '@/components/route-prefetcher'
 import ErrorBoundary from "@/components/error-boundary"
+import { TopBar } from "@/components/top-bar"
+import { LoadingProvider } from "@/contexts/loading-context"
+import { NavigationEvents } from "@/components/navigation-events"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -45,25 +48,33 @@ export default function RootLayout({
         className="bg-zinc-950"
         suppressHydrationWarning
       >
-        <ErrorBoundary>
         <ClerkProvider>
-          <LocationProvider>
-            <div className="flex min-h-screen">
-              <SidebarDemo />
-              <MainContent>
-                {children}
-              </MainContent>
-              <ClientWrapper>
-                <BottomNav />
-              </ClientWrapper>
+          <LoadingProvider>
+            <TopBar />
+            <NavigationEvents />
+            <div className="pt-[calc(2vh+56px)]">
+              <main className="bg-zinc-950">
+                <ErrorBoundary>
+                  <LocationProvider>
+                    <div className="flex min-h-[calc(100vh-calc(2vh+56px))]">
+                      <SidebarDemo />
+                      <MainContent>
+                        {children}
+                      </MainContent>
+                      <ClientWrapper>
+                        <BottomNav />
+                      </ClientWrapper>
+                    </div>
+                    <Toaster />
+                    <ClientWrapper>
+                      <RoutePrefetcher />
+                    </ClientWrapper>
+                  </LocationProvider>
+                </ErrorBoundary>
+              </main>
             </div>
-            <Toaster />
-            <ClientWrapper>
-              <RoutePrefetcher />
-            </ClientWrapper>
-          </LocationProvider>
+          </LoadingProvider>
         </ClerkProvider>
-        </ErrorBoundary>
       </body>
     </html>
   )

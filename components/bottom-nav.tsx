@@ -41,18 +41,18 @@ export default function BottomNav() {
   const bottomValue = useTransform(
     scrollY,
     [0, 100],
-    [isScrollingUp ? '2vh' : '-100%', isScrollingUp ? '2vh' : '-100%']
+    [isScrollingUp ? '1vh' : '-100%', isScrollingUp ? '1vh' : '-100%']
   )
 
   return (
     <motion.div 
-      className="fixed left-[2vw] right-[2vw] pb-safe block md:hidden z-50"
+      className="fixed left-[2vw] right-[2vw] pb-1 block md:hidden z-50"
       style={{ bottom: bottomValue }}
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
-      <div className="px-[2vw] py-[1vh]">
+      <div className="px-[2vw] py-[0.5vh]">
         <nav className="mx-auto max-w-[90vw]">
           <div className="flex items-center justify-around rounded-[28px] bg-black/40 backdrop-blur-sm py-2 px-3 border border-zinc-800">
             {navItems.map((item, index) => {
