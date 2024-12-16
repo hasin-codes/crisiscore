@@ -8,6 +8,7 @@ import { useRouter, usePathname } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
 import { useLoading } from "@/contexts/loading-context"
+import { AuthModal } from '@/components/auth-modal'
 
 export function TopBar() {
   const router = useRouter()
@@ -16,6 +17,8 @@ export function TopBar() {
   const { isLoading } = useLoading()
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
+  const [showAuth, setShowAuth] = useState(false)
+  const [authMode, setAuthMode] = useState<'sign-in' | 'sign-up'>('sign-in')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,21 +69,23 @@ export function TopBar() {
                 </SignedIn>
                 
                 <SignedOut>
-                  <SignInButton mode="modal">
-                    <Button 
-                      variant="ghost" 
-                      className="flex items-center rounded-full py-1.5 pl-1.5 pr-4 hover:bg-zinc-700/50 transition-colors w-fit mr-2 bg-zinc-800/50"
-                    >
-                      <Avatar className="h-7 w-7">
-                        <AvatarImage src="/placeholder.svg" alt="Sign in" />
-                        <AvatarFallback>SI</AvatarFallback>
-                      </Avatar>
-                      <span className="text-white text-sm font-medium ml-3 select-none">
-                        Sign in
-                      </span>
-                      <ChevronRight className="h-4 w-4 text-gray-400 ml-auto" />
-                    </Button>
-                  </SignInButton>
+                  <button 
+                    onClick={() => {
+                      setAuthMode('sign-in')
+                      setShowAuth(true)
+                    }}
+                    className="relative group/btn flex items-center rounded-full py-1.5 pl-1.5 pr-4 hover:bg-zinc-700/50 transition-colors w-fit mr-2 bg-zinc-800/50"
+                  >
+                    <Avatar className="h-7 w-7">
+                      <AvatarImage src="/placeholder.svg" alt="Sign in" />
+                      <AvatarFallback>SI</AvatarFallback>
+                    </Avatar>
+                    <span className="text-white text-sm font-medium ml-3 select-none">
+                      Sign in
+                    </span>
+                    <ChevronRight className="h-4 w-4 text-gray-400 ml-auto" />
+                    <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-[#E6FF00] to-transparent" />
+                  </button>
                 </SignedOut>
               </div>
               
@@ -118,6 +123,12 @@ export function TopBar() {
           )}
         </div>
       </div>
+
+      <AuthModal 
+        isOpen={showAuth}
+        onClose={() => setShowAuth(false)}
+        mode={authMode}
+      />
     </>
   )
 } 

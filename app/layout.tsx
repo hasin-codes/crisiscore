@@ -31,6 +31,21 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "CrisisCore",
   description: "Emergency Management System",
+  openGraph: {
+    title: 'CrisisCore',
+    description: 'Emergency Management System',
+    type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'CrisisCore',
+    description: 'Emergency Management System',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

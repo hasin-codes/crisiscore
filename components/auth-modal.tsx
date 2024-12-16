@@ -1,9 +1,7 @@
 'use client'
 
-import { useSignIn } from "@clerk/nextjs"
-import { cn } from "@/lib/utils"
+import { useSignIn, useSignUp } from "@clerk/nextjs"
 import Image from "next/image"
-import { Loader2 } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 import { Spotlight } from "@/components/ui/spotlight"
@@ -13,47 +11,50 @@ import { toast } from "@/components/ui/use-toast"
 import { handleError } from "@/lib/error-handling"
 import { logger } from "@/lib/logger"
 
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-[#E6FF00] to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-[#E6FF00] to-transparent" />
-    </>
-  )
+interface AuthModalProps {
+  isOpen: boolean
+  onClose: () => void
+  mode: 'sign-in' | 'sign-up'
 }
+
+const BottomGradient = () => (
+  <>
+    <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-[#E6FF00] to-transparent" />
+    <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-[#E6FF00] to-transparent" />
+  </>
+)
 
 const providers = ['google', 'facebook', 'apple'] as const
 type Provider = (typeof providers)[number]
 type OAuthStrategy = `oauth_${Provider}`
 
-export default function SignInPage() {
+export function AuthModal({ isOpen, onClose, mode }: AuthModalProps) {
   const [loading, setLoading] = useState(false)
-  const { isLoaded, signIn } = useSignIn()
-  
-  if (!isLoaded) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950">
-        <div className="w-16 h-16 border-4 border-[#E6FF00] border-solid rounded-full animate-spin border-t-transparent" />
-      </div>
-    )
-  }
+  const { signIn } = useSignIn()
+  const { signUp } = useSignUp()
 
-  const handleOAuthSignIn = async (provider: OAuthStrategy) => {
-    if (loading || !signIn) return
-
+  const handleOAuth = async (provider: OAuthStrategy) => {
+    if (loading) return
+    
     try {
       setLoading(true)
-      await signIn.authenticateWithRedirect({
+      const auth = mode === 'sign-in' ? signIn : signUp
+      
+      if (!auth) {
+        throw new Error('Authentication not initialized')
+      }
+
+      await auth.authenticateWithRedirect({
         strategy: provider,
         redirectUrl: "/sso-callback",
         redirectUrlComplete: "/"
       })
     } catch (err) {
-      logger.error("OAuth sign-in error:", err)
+      logger.error(`OAuth ${mode} error:`, err)
       const error = handleError(err)
       toast({
         title: "Authentication Error",
-        description: error.message || "Failed to sign in. Please try again later.",
+        description: error.message || `Failed to ${mode}. Please try again later.`,
         variant: "destructive"
       })
     } finally {
@@ -61,9 +62,11 @@ export default function SignInPage() {
     }
   }
 
+  if (!isOpen) return null
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-950 p-4">
-      <div className="relative max-w-md w-full mx-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div className="relative max-w-md w-full">
         <div className="relative z-10 rounded-2xl p-4 md:p-8 shadow-[0_0_1px_1px_rgba(0,0,0,0.3)] bg-black overflow-hidden">
           <Spotlight 
             className="absolute -top-40 -left-40" 
@@ -82,10 +85,13 @@ export default function SignInPage() {
             </div>
 
             <h2 className="font-bold text-xl text-neutral-200 text-center">
-              Welcome back
+              {mode === 'sign-in' ? 'Welcome back' : 'Create your account'}
             </h2>
             <p className="text-neutral-300 text-sm max-w-sm mt-2 text-center mx-auto">
-              Sign in to your account to continue
+              {mode === 'sign-in' 
+                ? 'Sign in to your account to continue'
+                : 'Join CrisisCore to get started'
+              }
             </p>
 
             <div className="my-8 space-y-4">
@@ -95,7 +101,7 @@ export default function SignInPage() {
                   type="button"
                   disabled={loading}
                   className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-white rounded-md h-10 font-medium bg-zinc-900 shadow-[0px_0px_1px_1px_var(--neutral-800)] disabled:opacity-50 disabled:cursor-not-allowed"
-                  onClick={() => handleOAuthSignIn(`oauth_${provider}` as OAuthStrategy)}
+                  onClick={() => handleOAuth(`oauth_${provider}` as OAuthStrategy)}
                 >
                   {provider === 'google' && <FcGoogle className="h-5 w-5" />}
                   {provider === 'facebook' && <FaFacebook className="h-5 w-5 text-[#1877F2]" />}
@@ -123,10 +129,27 @@ export default function SignInPage() {
               </p>
 
               <p className="text-neutral-300 text-sm">
-                Don't have an account?{' '}
-                <Link href="/sign-up" className="text-[#E6FF00] hover:underline font-medium">
-                  Sign up
-                </Link>
+                {mode === 'sign-in' ? (
+                  <>
+                    Don't have an account?{' '}
+                    <button 
+                      onClick={() => onClose()}
+                      className="text-[#E6FF00] hover:underline font-medium"
+                    >
+                      Sign up
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    Already have an account?{' '}
+                    <button
+                      onClick={() => onClose()}
+                      className="text-[#E6FF00] hover:underline font-medium"
+                    >
+                      Sign in
+                    </button>
+                  </>
+                )}
               </p>
             </div>
           </div>
