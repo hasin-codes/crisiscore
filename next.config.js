@@ -44,26 +44,7 @@ const nextConfig = {
   images: {
     domains: ['github.com', 'img.clerk.com'],
     minimumCacheTTL: 60,
-  },
-
-  // Improved build configuration
-  webpack: (config, { dev, isServer }) => {
-    // Production optimizations
-    if (!dev) {
-      config.optimization.minimize = true
-      config.optimization.minimizer.push(
-        new TerserPlugin({
-          terserOptions: {
-            compress: {
-              drop_console: true,
-            },
-          },
-        })
-      )
-    }
-
-    return config
-  },
+  }
 }
 
 module.exports = nextConfig 
