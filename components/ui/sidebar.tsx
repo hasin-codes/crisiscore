@@ -154,18 +154,15 @@ export const SidebarLink = ({
         }
         if (open && index === 1) {
           return (
-            <motion.span
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{
-                duration: 0.2,
-                ease: "easeInOut"
+            <span
+              className="text-base whitespace-nowrap transition-opacity duration-200"
+              style={{ 
+                opacity: open ? 1 : 0,
+                fontSize: '16px'
               }}
-              style={{ fontSize: '16px', whiteSpace: 'nowrap' }}
             >
               {child}
-            </motion.span>
+            </span>
           );
         }
         return null;

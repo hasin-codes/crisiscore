@@ -21,8 +21,7 @@ const navItems: NavItem[] = [
 export default function BottomNav() {
   const router = useRouter()
   const pathname = usePathname()
-  const { scrollY } = useScroll()
-  const [isScrollingUp, setIsScrollingUp] = useState(true)
+  const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
   
   const activeTab = navItems.findIndex(item => item.href === pathname)
@@ -30,7 +29,7 @@ export default function BottomNav() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      setIsScrollingUp(currentScrollY < lastScrollY)
+      setIsVisible(currentScrollY < lastScrollY || currentScrollY < 10)
       setLastScrollY(currentScrollY)
     }
 
@@ -38,43 +37,46 @@ export default function BottomNav() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY])
 
-  const bottomValue = useTransform(
-    scrollY,
-    [0, 100],
-    [isScrollingUp ? '1vh' : '-100%', isScrollingUp ? '1vh' : '-100%']
-  )
-
   return (
     <motion.div 
-      className="fixed left-[2vw] right-[2vw] pb-1 block md:hidden z-50"
-      style={{ bottom: bottomValue }}
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className="fixed left-[2vw] right-[2vw] bottom-[1vh] pb-1 block md:hidden z-50"
+      animate={{ 
+        y: isVisible ? 0 : 100 
+      }}
+      transition={{
+        duration: 0.3,
+        ease: "easeInOut"
+      }}
     >
       <div className="px-[2vw] py-[0.5vh]">
         <nav className="mx-auto max-w-[90vw]">
-          <div className="flex items-center justify-around rounded-[28px] bg-black/40 backdrop-blur-sm py-2 px-3 border border-zinc-800">
+          <div className="flex items-center justify-around rounded-[28px] bg-black/40 backdrop-blur-sm py-2 px-3 border border-zinc-800 overflow-hidden">
             {navItems.map((item, index) => {
               const isActive = activeTab === index
               return (
                 <motion.button
                   key={index}
-                  onClick={() => {
-                    router.push(item.href)
-                  }}
+                  onClick={() => router.push(item.href)}
                   className="relative flex items-center justify-center max-w-[120px]"
-                  whileTap={{ scale: 0.95 }}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="bubble"
-                      className="absolute inset-0 -z-10 rounded-full bg-[#E6FF00]"
-                      initial={false}
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      className="absolute rounded-full bg-[#E6FF00]"
+                      style={{
+                        top: '2px',
+                        bottom: '2px',
+                        left: '2px',
+                        right: '2px'
+                      }}
+                      transition={{
+                        type: "tween",
+                        duration: 0.3,
+                        ease: "easeInOut"
+                      }}
                     />
                   )}
-                  <span className="flex items-center gap-1 px-3 py-2">
+                  <span className="relative z-10 flex items-center gap-1 px-3 py-2">
                     <span className={`flex items-center justify-center rounded-full transition-colors ${
                       isActive ? "bg-transparent" : "bg-zinc-800"
                     } p-2`}>
