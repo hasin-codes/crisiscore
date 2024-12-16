@@ -1,12 +1,14 @@
 'use client'
 
 import { useEffect } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useLoading } from '@/contexts/loading-context'
+import { routes } from '@/hooks/use-route-prefetch'
 
 export function NavigationEvents() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const router = useRouter()
   const { setIsLoading } = useLoading()
 
   useEffect(() => {
@@ -18,35 +20,27 @@ export function NavigationEvents() {
       setIsLoading(false)
     }
 
-    // Navigation observers
-    const navigationObserver = new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry) => {
-        if (entry.entryType === 'navigation') {
-          handleStart()
-        }
-      })
-    })
-
-    navigationObserver.observe({ entryTypes: ['navigation'] })
-
-    // Click handler for navigation
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement
-      if (target.tagName === 'A' || target.closest('a') || target.closest('button')) {
+      const link = target.closest('a')
+      const button = target.closest('button')
+      
+      if (link?.href || button) {
         handleStart()
-        setTimeout(handleStop, 500) // Fallback timer
+        if (link?.pathname && routes.includes(link.pathname)) {
+          router.prefetch(link.pathname)
+        }
+        setTimeout(handleStop, 500)
       }
     }
 
     document.addEventListener('click', handleClick)
 
     return () => {
-      navigationObserver.disconnect()
       document.removeEventListener('click', handleClick)
     }
-  }, [setIsLoading])
+  }, [setIsLoading, pathname, router])
 
-  // Handle route changes
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false)
