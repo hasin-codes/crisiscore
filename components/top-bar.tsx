@@ -71,15 +71,10 @@ export function TopBar() {
                       variant="ghost" 
                       className="flex items-center rounded-full py-1.5 pl-1.5 pr-4 hover:bg-zinc-700/50 transition-colors w-fit mr-2 bg-zinc-800/50"
                     >
-                      <div className="relative">
-                        <Avatar className="h-7 w-7">
-                          <AvatarImage 
-                            src="/placeholder.svg?height=28&width=28"
-                            alt="Sign in" 
-                          />
-                          <AvatarFallback>SI</AvatarFallback>
-                        </Avatar>
-                      </div>
+                      <Avatar className="h-7 w-7">
+                        <AvatarImage src="/placeholder.svg" alt="Sign in" />
+                        <AvatarFallback>SI</AvatarFallback>
+                      </Avatar>
                       <span className="text-white text-sm font-medium ml-3 select-none">
                         Sign in
                       </span>
@@ -89,8 +84,8 @@ export function TopBar() {
                 </SignedOut>
               </div>
               
-              <div className="flex items-center gap-2">
-                <SignedIn>
+              <SignedIn>
+                <div className="flex items-center gap-2">
                   <Button 
                     variant="ghost" 
                     size="icon" 
@@ -109,8 +104,8 @@ export function TopBar() {
                     <Settings className="h-4 w-4 text-gray-400" />
                     <span className="sr-only">Settings</span>
                   </Button>
-                </SignedIn>
-              </div>
+                </div>
+              </SignedIn>
             </div>
           </nav>
         </div>
