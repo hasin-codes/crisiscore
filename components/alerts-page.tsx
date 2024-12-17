@@ -93,9 +93,9 @@ export function AlertsPageComponent() {
 
   return (
     <ClientOnly>
-      <div className="min-h-screen bg-zinc-950 text-white">
+      <div className="min-h-screen pb-16 bg-zinc-950">
         <Container>
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* AI Briefing Section */}
             <AlertCard
               title="AI Briefing"
