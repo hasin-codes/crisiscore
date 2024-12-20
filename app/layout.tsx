@@ -63,14 +63,14 @@ export default function RootLayout({
         className="bg-zinc-950"
         suppressHydrationWarning
       >
-        <ClerkProvider>
-          <LoadingProvider>
-            <TopBar />
-            <NavigationEvents />
-            <div className="pt-[calc(2vh+56px)]">
-              <main className="bg-zinc-950">
-                <ErrorBoundary>
-                  <LocationProvider>
+        <LocationProvider>
+          <ClerkProvider>
+            <LoadingProvider>
+              <TopBar />
+              <NavigationEvents />
+              <div className="pt-[calc(2vh+56px)]">
+                <main className="bg-zinc-950">
+                  <ErrorBoundary>
                     <div className="flex min-h-[calc(100vh-calc(2vh+56px))]">
                       <SidebarDemo />
                       <MainContent>
@@ -84,12 +84,12 @@ export default function RootLayout({
                     <ClientWrapper>
                       <RoutePrefetcher />
                     </ClientWrapper>
-                  </LocationProvider>
-                </ErrorBoundary>
-              </main>
-            </div>
-          </LoadingProvider>
-        </ClerkProvider>
+                  </ErrorBoundary>
+                </main>
+              </div>
+            </LoadingProvider>
+          </ClerkProvider>
+        </LocationProvider>
       </body>
     </html>
   )

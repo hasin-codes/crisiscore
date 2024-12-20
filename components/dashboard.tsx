@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react'
 import { DynamicWindyMap } from '@/components/ui/dynamic-windy-map'
 import ClientOnly from '@/components/ui/client-only'
 import { Container } from '@/components/ui/container'
+import { useLocation } from '@/contexts/location-context'
 
 interface AlertCardProps {
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -136,10 +137,56 @@ const WeatherSection = () => {
     windSpeed: { value: 15, unit: 'km/h' }
   }
 
+  const { latitude, longitude, loading, error, address } = useLocation()
+
+  const locationDisplay = loading ? (
+    <span className="text-zinc-400 animate-pulse">Accessing location...</span>
+  ) : error ? (
+    <div className="flex flex-col items-end">
+      <span className="text-red-400 flex items-center text-xs">
+        <AlertTriangle className="h-4 w-4 mr-1" />
+        {error}
+      </span>
+      <button 
+        onClick={() => window.location.reload()}
+        className="text-xs text-blue-400 hover:text-blue-300 mt-1"
+      >
+        Try again
+      </button>
+    </div>
+  ) : latitude && longitude ? (
+    <div className="flex flex-col items-end text-xs">
+      <span className="text-zinc-400">
+        {`${latitude.toFixed(4)}°, ${longitude.toFixed(4)}°`}
+      </span>
+      {address && (
+        <span className="text-zinc-500 mt-0.5">
+          {address}
+        </span>
+      )}
+    </div>
+  ) : (
+    <span className="text-zinc-400">Location not available</span>
+  )
+
   return (
     <ClientOnly>
       <Card className="bg-zinc-900 border-zinc-800 mb-4 mx-2 sm:mx-4">
-        <CardContent className="p-3 sm:p-4">
+        <CardContent className="p-3 sm:p-4 space-y-4">
+          <Card className="bg-black/40 border-zinc-800/50">
+            <CardContent className="p-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <MapPin className="h-4 w-4 text-zinc-400 mr-2" />
+                  <span className="text-sm text-zinc-400">Your Location</span>
+                </div>
+                <div className="text-sm">
+                  {locationDisplay}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           <div className="grid grid-cols-3 gap-2 sm:gap-4">
             <Card className="bg-black/40 border-zinc-800/50 min-h-[80px] sm:min-h-[100px]">
               <CardContent className="flex flex-col items-center justify-center h-full p-2 sm:p-4">
